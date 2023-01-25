@@ -1,0 +1,29 @@
+{
+  "name": "casio-mern-app",
+  "version": "1.0.0",
+  "description": "casino mern application",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon start app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/landonb629/casio-mern-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/landonb629/casio-mern-app/issues"
+  },
+  "homepage": "https://github.com/landonb629/casio-mern-app#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.4",
+    "nodemon": "^2.0.20"
+  }
+}
