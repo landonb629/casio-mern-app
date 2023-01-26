@@ -3,7 +3,7 @@ const app = express()
 const dbConnection = require('./src/config/database')
 const cookieParser = require('cookie-parser')
 app.use(express.json())
-app.use(cookieParser())
+app.use(cookieParser('cookieSig'))
 
 
 //routes 
