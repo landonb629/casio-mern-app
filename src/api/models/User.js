@@ -28,6 +28,11 @@ User.pre('save', async function() {
     }
 })
 
+User.methods.comparePasswords = async function(givenPassword) { 
+    const isMatch = await bcrypt.compare(givenPassword, this.password)
+    return isMatch
+}
+
 
 
 module.exports = mongoose.model('User', User)

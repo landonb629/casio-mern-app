@@ -1,5 +1,6 @@
 const { createJWT, addAuthCookie } = require('../helpers/auth')
 const User = require('../models/User') 
+const comparePasswords = require('../models/User')
 
 const register = async (req, res) => { 
     try { 
@@ -19,7 +20,20 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => { 
-    res.status(200).json({msg: 'hit login'})
+    const {username, password} = req.body
+    if (!username || !password) { 
+        return res.status(404).json({msg: 'please register'})
+    }
+    const user = await User.findOne({username})
+    const isCorrectPassword = await user.comparePasswords(password)
+    if (!isCorrectPassword) { 
+        return res.status(404).json({msg: 'please provide a correct username and password'})
+    }
+    const payload = {userId: user._id, username: user.username}
+    const token = await createJWT({payload: payload})
+    await addAuthCookie({res, token: token})
+    res.status(200).json({payload: payload})
+
 }
 
 const checkRoute = async (req, res) => { 
@@ -42,5 +56,7 @@ progress:
 - token is generated
 - returned to use in json
 - cookie is returned to the browser 
+
+
 
 */
