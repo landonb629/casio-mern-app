@@ -13,7 +13,10 @@ const User = new Schema({
         required: [true, 'password is required']
     },
     accountBalance: { 
-        type: Number
+        type: Number,
+        default: 0,
+        immutable: false
+
     }
 })
 

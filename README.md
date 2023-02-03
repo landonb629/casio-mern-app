@@ -1,5 +1,11 @@
 # casio-mern-app
 
+# Application function 
+- Allow users to login
+- allow users to make deposits and withdrawls from their account 
+- allow authenticated users to see a list of games with prices associated with them 
+- allow user to play games, and their account balance will be updated to reflect
+
 
 # Project motivations 
 I wanted to try this project to continue building off the skills I have learned while exploring web development. I intend to use this project as a test application when running kubernetes, and container technologies from azure and AWS.
