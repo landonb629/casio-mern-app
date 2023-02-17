@@ -16,7 +16,6 @@ const User = new Schema({
         type: Number,
         default: 0,
         immutable: false
-
     }
 })
 

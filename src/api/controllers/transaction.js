@@ -1,3 +1,4 @@
+const Transaction = require('../models/Transaction')
 const User = require('../models/User')
 
 const showBalance = async (req, res) => { 
@@ -10,16 +11,32 @@ const showBalance = async (req, res) => {
     }
 }
 
+const showTransaction = async (req, res) => { 
+    try {
+        const {userId} = req.user 
+        const transactions = await Transaction.find({user: userId})
+        if (!transactions) { 
+            return res.status(500).json({msg: 'no transactions'})
+        }
+        res.status(200).json({transactions})
+    } catch(error) { 
+        res.status(500).json({msg: error})
+    }
+}
+
 const deposit = async (req, res) => { 
     try {  
         const {amount} = req.body
         const {userId, username} = req.user
         const user = await User.findOne({_id: userId})
+        const transaction = await Transaction.create({amount: amount, user: userId, type: "Deposit"})
+        if (!transaction) { 
+            return res.status(500).json({msg: 'transaction creation failed'})
+        }
         const newValue = user.accountBalance + amount 
         user.accountBalance = newValue
         await user.save()
-       // const update = await User.findOneAndUpdate({_id: userId, accountBalance: newValue})
-        res.status(200).json({user})
+        res.status(200).json({user: {userId, username}, amount: newValue})
     } catch(error) { 
         res.status(200).json({msg: error})
     }
@@ -36,6 +53,7 @@ const withdrawl = async (req, res) => {
         if (user.accountBalance <= 0) { 
             return res.status(200).json({msg: 'your account balance is at zero'})
         }
+        const transaction = await Transaction.create({amount: amount, user: userId, type: "Withdrawl"})
         const newValue = user.accountBalance - amount
         user.accountBalance = newValue
         await user.save()
@@ -48,5 +66,6 @@ const withdrawl = async (req, res) => {
 module.exports = { 
     showBalance,
     deposit,
-    withdrawl
+    withdrawl,
+    showTransaction
 }
