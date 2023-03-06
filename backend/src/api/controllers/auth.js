@@ -8,7 +8,7 @@ const register = async (req, res) => {
         if (!username || !password) { 
             return res.status(404).json({msg: 'must have username and password'})
         }
-        const user = await User.create({...req.body})
+        const user = await User.create({...req.body}) // {username: username, password: password}
         const userObject = {userId: user._id, username: user.username}
         const token = await createJWT({payload: userObject})
         const cookie = await addAuthCookie({res, token})

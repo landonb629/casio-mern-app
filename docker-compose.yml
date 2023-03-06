@@ -2,13 +2,13 @@ version: '3'
 services:
   app:
     build:
-      context: .
+      context: ./backend
     command: npm start
     ports: 
       - 3007:3007
     volumes:
       - type: bind 
-        source: .
+        source: ./backend
         target: /usr/src/app
     depends_on:
       - db
@@ -22,6 +22,19 @@ services:
       - type: volume
         source: mongo-db
         target: /data/db 
+  
+  frontend:
+    build:
+      context: ./frontend
+    command: npm start 
+    ports: 
+      - 3000:3000
+    volumes:
+      - type: bind 
+        source: ./frontend
+        target: /usr/src/app
+    depends_on:
+      - app
     
 volumes:
   mongo-db:
