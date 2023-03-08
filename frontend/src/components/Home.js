@@ -9,7 +9,8 @@ const Home = () => {
     const [user, setUser] = useState('')
     // function that checks if the username cookie is present in the browser
     const checkAuthentication = async () => { 
-        const userCookie = Cookies.get('username')
+        const userCookie = Cookies.get('user')
+        
         // if cookie is not present, set the user state value to null
         if (!userCookie) { 
             console.log('user is not authenticated')
@@ -20,14 +21,15 @@ const Home = () => {
         }
         
     }
+    
 
     useEffect(()=> { 
-        // if user is null, navigate to the login page
         checkAuthentication()
-        if (user === 'null') { 
+       if (user === 'null') { 
+            console.log('should be navigating user')
             navigate("/login")
         }
-    },[navigate])
+    },[user])
     return(
         <div>Home page</div>
     )

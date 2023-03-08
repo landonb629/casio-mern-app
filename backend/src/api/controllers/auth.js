@@ -9,11 +9,10 @@ const register = async (req, res) => {
             return res.status(404).json({msg: 'must have username and password'})
         }
         const user = await User.create({...req.body}) // {username: username, password: password}
-        const userObject = {userId: user._id, username: user.username}
-        const token = await createJWT({payload: userObject})
-        const cookie = await addAuthCookie({res, token})
-        //res.cookie('token', token,{expires: new Date(Date.now() + 90000), httpOnly: true} )
-        res.status(200).json({userObject})
+        const payload = {userId: user._id, username: user.username}
+        const token = await createJWT({payload: payload})
+        await addAuthCookie({res, token: token})
+        res.status(200).json({payload})
     } catch(error) { 
         res.status(404).json({msg: error})
     }
@@ -25,11 +24,14 @@ const login = async (req, res) => {
         return res.status(404).json({msg: 'please register'})
     }
     const user = await User.findOne({username})
+    if (!user) { 
+        res.status(404).json({msg: 'no user found'})
+    }
     const isCorrectPassword = await user.comparePasswords(password)
     if (!isCorrectPassword) { 
         return res.status(404).json({msg: 'please provide a correct username and password'})
     }
-    const payload = {userId: user._id, username: user.username}
+    const payload = {userId: user._id, username: user.username }
     const token = await createJWT({payload: payload})
     await addAuthCookie({res, token: token})
     res.status(200).json({payload: payload})

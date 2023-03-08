@@ -31,8 +31,13 @@ User.pre('save', async function() {
 })
 
 User.methods.comparePasswords = async function(givenPassword) { 
-    const isMatch = await bcrypt.compare(givenPassword, this.password)
-    return isMatch
+    try { 
+        const isMatch = await bcrypt.compare(givenPassword, this.password)
+        return isMatch
+    } catch (error) { 
+        return error
+    }
+    
 }
 
 

@@ -17,9 +17,8 @@ const createJWT = async ({payload}) => {
 const addAuthCookie = async ({res, token}) => { 
     return res.cookie('user', token, {
         expires: new Date(Date.now() + 86400000), 
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production' ? true : false,
-        signed: true 
+        signed: true,
+        httpOnly: false
     })
 }
 
