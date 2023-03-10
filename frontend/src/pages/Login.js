@@ -3,8 +3,6 @@ import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 
-
-
 const Login = () => {
     const credentials = {
         username: '',
@@ -25,7 +23,6 @@ const Login = () => {
             try { 
                 const login = await loginUser()
                 const {userId, username} = login.payload 
-                const setLocal = localStorage.setItem('username', username)
                 userId ? setIsAuthenticated(true) : setIsAuthenticated(false)
             } catch (error) { 
                 alert('username and password incorrect')
@@ -34,7 +31,6 @@ const Login = () => {
             try { 
                 const register = await registerUser()
                 const {userId, username} = register.payload
-                const setLocal = localStorage.setItem('username', username)
                 userId ? setIsAuthenticated(true) : setIsAuthenticated(false)
             } catch (error) { 
                 console.log(error)
@@ -82,11 +78,6 @@ const Login = () => {
             navigate('/')
         }
     }, [authenticated])
-
-    const loginStyle = { 
-        display: 'flex',
-    
-    }
 
     return(
         <main>
