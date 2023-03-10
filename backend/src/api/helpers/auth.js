@@ -22,6 +22,7 @@ const addAuthCookie = async ({res, token}) => {
     })
 }
 
+
 module.exports = {
     createJWT,
     addAuthCookie,

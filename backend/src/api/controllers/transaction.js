@@ -4,7 +4,7 @@ const User = require('../models/User')
 const showBalance = async (req, res) => { 
     try {  
         const {userId, username } = req.user
-        const user = await User.findOne({_id: userId})
+        const user = await User.findOne({_id: userId}).select("-password")
         res.status(200).json({user})
     } catch(error) { 
         res.status(200).json({msg: error})

@@ -1,5 +1,6 @@
 const Game = require('../models/Games')
 const User = require('../models/User')
+
 const listGame = async (req, res) => { 
     try { 
         const game = await Game.find({})
@@ -8,6 +9,7 @@ const listGame = async (req, res) => {
         res.status(500).json({msg: error})
     }
 }
+
 
 const playGame = async (req, res) => { 
     try { 

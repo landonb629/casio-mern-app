@@ -1,7 +1,7 @@
 const {verifyJWT} = require('../helpers/auth')
 
 const checkAuth = async (req, res, next) => {   
-    const token = req.signedCookies.token 
+    const token = req.signedCookies.user
     if (!token) { 
         return res.status(403).json({msg: "please authenticate"})
     }
