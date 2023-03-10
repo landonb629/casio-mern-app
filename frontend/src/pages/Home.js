@@ -12,6 +12,7 @@ const Home = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState('')
     const [userProperties, setUserProperties] = useState(initialUser)
+    const [loading, setLoading] = useState(true)
     // function that checks if the username cookie is present in the browser
 
     const checkAuthentication = async () => { 
@@ -33,6 +34,7 @@ const getUserData = async () => {
               const response = await userData.json()
               const {accountBalance, username} = response.user
               setUserProperties({balance: accountBalance, username: username})
+              setLoading(false)
             } catch(error) { 
         }
     }
@@ -51,7 +53,9 @@ const deposit = (e) => {
        getUserData()
     },[user])
 
-
+    if (loading) { 
+        return <section><h2>loading...</h2></section>
+    }
     return(
         <main> 
             <div>
