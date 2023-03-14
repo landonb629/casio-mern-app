@@ -8,11 +8,12 @@ const Home = () => {
         balance: 0,
         username: ''
     }
-
     const navigate = useNavigate()
     const [user, setUser] = useState('')
     const [userProperties, setUserProperties] = useState(initialUser)
     const [loading, setLoading] = useState(true)
+    const [deposit, setDeposit] = useState(0)
+    const [withdrawl, setWithdrawl] = useState(0)
     // function that checks if the username cookie is present in the browser
 
     const checkAuthentication = async () => { 
@@ -23,6 +24,38 @@ const Home = () => {
             setUser('null')
         }
     }
+
+    const depositHandler = (e) => { 
+        setDeposit(e.target.value)
+    }
+
+    const withdrawlHandler = (e) => { 
+
+    }
+
+    const submitFunds = async (e) => {
+        e.preventDefault()
+        const completeDeposit = await postFunds()
+    }
+
+const postFunds = async () => { 
+    try { 
+       const dataObject = {amount: deposit}
+       const fundData = await fetch('http://localhost:3007/api/v1/transaction/deposit/', { 
+           method: 'PATCH',
+           credentials: 'include',
+           headers: { 
+               "Content-Type": "application/json"
+           },
+           body: JSON.stringify(dataObject)
+       })
+       const response = await fundData.json()
+       setUserProperties({...userProperties, balance: response.amount})
+       
+    } catch(error) { 
+        alert(error)
+    }
+}
  
 const getUserData = async () => { 
     try { 
@@ -33,17 +66,13 @@ const getUserData = async () => {
         })
               const response = await userData.json()
               const {accountBalance, username} = response.user
+              console.log(accountBalance)
+              console.log(username)
               setUserProperties({balance: accountBalance, username: username})
               setLoading(false)
             } catch(error) { 
         }
     }
-const deposit = (e) => { 
-    e.preventDefault()
-    setUserProperties({...userProperties, balance: 10})
-}
-
-
     useEffect(()=> { 
        checkAuthentication()
        if (user === 'null') { 
@@ -58,14 +87,26 @@ const deposit = (e) => {
     }
     return(
         <main> 
-            <div>
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
                 <h2>Welcome {userProperties.username} </h2>
+                <p>current balance: {userProperties.balance}</p>
             </div>
             <section>
                 <div>
-                  <h4>balance: {userProperties.balance}</h4>
+                    <form onSubmit={submitFunds}>
+                        <label style={{marginRight: 45}}>Deposit Funds</label>
+                        <input type="number" name="deposit" value={deposit} onChange={depositHandler} />
+                        <button type="submit">Deposit</button>
+                    </form>
                 </div>
-                <button onClick={deposit}>Deposit</button>
+                <br></br>
+                <div>
+                    <form onSubmit={submitFunds}>
+                        <label style={{marginRight: 45}}>Withdrawl Funds</label>
+                        <input type="number" name="withdrawl" value={withdrawl} onChange={withdrawlHandler} />
+                        <button type="submit">Withdrawl</button>
+                    </form>
+                </div>
             </section>
         </main>
     )

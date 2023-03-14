@@ -1,6 +1,5 @@
 const { createJWT, addAuthCookie } = require('../helpers/auth')
 const User = require('../models/User') 
-const comparePasswords = require('../models/User')
 
 const register = async (req, res) => { 
     try { 

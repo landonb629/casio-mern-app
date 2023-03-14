@@ -26,14 +26,16 @@ const showTransaction = async (req, res) => {
 
 const deposit = async (req, res) => { 
     try {  
+        console.log('hitting deposit route')
         const {amount} = req.body
+        console.log(amount)
         const {userId, username} = req.user
         const user = await User.findOne({_id: userId})
         const transaction = await Transaction.create({amount: amount, user: userId, type: "Deposit"})
         if (!transaction) { 
             return res.status(500).json({msg: 'transaction creation failed'})
         }
-        const newValue = user.accountBalance + amount 
+        const newValue = Number(user.accountBalance) + Number(amount) 
         user.accountBalance = newValue
         await user.save()
         res.status(200).json({user: {userId, username}, amount: newValue})

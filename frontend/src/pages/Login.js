@@ -25,7 +25,7 @@ const Login = () => {
                 const {userId, username} = login.payload 
                 userId ? setIsAuthenticated(true) : setIsAuthenticated(false)
             } catch (error) { 
-                alert('username and password incorrect')
+                alert(error)
             }
         } else { 
             try { 
