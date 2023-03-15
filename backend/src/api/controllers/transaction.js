@@ -56,7 +56,7 @@ const withdrawl = async (req, res) => {
             return res.status(200).json({msg: 'your account balance is at zero'})
         }
         const transaction = await Transaction.create({amount: amount, user: userId, type: "Withdrawl"})
-        const newValue = user.accountBalance - amount
+        const newValue = Number(user.accountBalance) - Number(amount)
         user.accountBalance = newValue
         await user.save()
         res.status(200).json({msg: `withdraw succeeded, new value: ${user.accountBalance}`})

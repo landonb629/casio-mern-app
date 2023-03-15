@@ -2,6 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie'
 import { Navigate, useNavigate } from "react-router-dom";
+import {Link} from 'react-router-dom'
+import postData from '../helpers/fetch'
 
 const Home = () => { 
     const initialUser = {
@@ -17,7 +19,6 @@ const Home = () => {
     // function that checks if the username cookie is present in the browser
 
     const checkAuthentication = async () => { 
-        console.log('running check user auth')
         const userCookie = Cookies.get('user')
         // if cookie is not present, set the user state value to null
         if (!userCookie) { 
@@ -30,7 +31,8 @@ const Home = () => {
     }
 
     const withdrawlHandler = (e) => { 
-
+        setWithdrawl(e.target.value)
+        console.log(withdrawl)
     }
 
     const submitFunds = async (e) => {
@@ -39,7 +41,8 @@ const Home = () => {
     }
 
 const postFunds = async () => { 
-    try { 
+    if (deposit === 0 && withdrawl > 0) { 
+            /*      
        const dataObject = {amount: deposit}
        const fundData = await fetch('http://localhost:3007/api/v1/transaction/deposit/', { 
            method: 'PATCH',
@@ -55,6 +58,19 @@ const postFunds = async () => {
     } catch(error) { 
         alert(error)
     }
+        } catch(error) { 
+            
+        }
+    */
+         
+    } else if (withdrawl === 0 && deposit > 0) { 
+        console.log('sending deposit')
+    } else if (withdrawl > 0 && deposit > 0) { 
+        alert('cant send withdrawl and deposit at the same time ')
+    } 
+        /*
+       
+    */
 }
  
 const getUserData = async () => { 
@@ -86,16 +102,21 @@ const getUserData = async () => {
         return <section><h2>loading...</h2></section>
     }
     return(
+
         <main> 
-            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div>
+                
+            </div>
+            <div style={{display: 'flex', justifyContent: 'left', alignItems: 'center', gap: 15}}>
                 <h2>Welcome {userProperties.username} </h2>
                 <p>current balance: {userProperties.balance}</p>
+                <Link to="/games">Games</Link>
             </div>
-            <section>
+            <section style={{}}>
                 <div>
                     <form onSubmit={submitFunds}>
                         <label style={{marginRight: 45}}>Deposit Funds</label>
-                        <input type="number" name="deposit" value={deposit} onChange={depositHandler} />
+                        <input type="number" name="deposit" value={deposit} onChange={depositHandler} style={{ marginRight: 10}}  />
                         <button type="submit">Deposit</button>
                     </form>
                 </div>
@@ -103,7 +124,7 @@ const getUserData = async () => {
                 <div>
                     <form onSubmit={submitFunds}>
                         <label style={{marginRight: 45}}>Withdrawl Funds</label>
-                        <input type="number" name="withdrawl" value={withdrawl} onChange={withdrawlHandler} />
+                        <input type="number" name="withdrawl" value={withdrawl} onChange={withdrawlHandler} style={{marginRight: 10}} />
                         <button type="submit">Withdrawl</button>
                     </form>
                 </div>
