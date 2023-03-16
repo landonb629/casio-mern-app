@@ -16,6 +16,8 @@ const Home = () => {
     const [loading, setLoading] = useState(true)
     const [deposit, setDeposit] = useState(0)
     const [withdrawl, setWithdrawl] = useState(0)
+    const [isWithdrawl, setIsWithdrawl] = useState(false)
+    const [isDeposit, setIsDeposit] = useState(false)
     // function that checks if the username cookie is present in the browser
 
     const checkAuthentication = async () => { 
@@ -29,6 +31,7 @@ const Home = () => {
     const depositHandler = (e) => { 
         setDeposit(e.target.value)
     }
+    
 
     const withdrawlHandler = (e) => { 
         setWithdrawl(e.target.value)
@@ -42,6 +45,7 @@ const Home = () => {
 
 const postFunds = async () => { 
     if (deposit === 0 && withdrawl > 0) { 
+        console.log(deposit)
             /*      
        const dataObject = {amount: deposit}
        const fundData = await fetch('http://localhost:3007/api/v1/transaction/deposit/', { 
@@ -64,13 +68,28 @@ const postFunds = async () => {
     */
          
     } else if (withdrawl === 0 && deposit > 0) { 
-        console.log('sending deposit')
+        console.log(deposit)
+        // use a state value that has a drop down for withdrawling and depositing, or create a popup
     } else if (withdrawl > 0 && deposit > 0) { 
         alert('cant send withdrawl and deposit at the same time ')
-    } 
+    } else if (withdrawl === 0 && deposit === 0) { 
+        console.log('values must be populated');
+    } else { 
+        console.log('catch all', deposit);
+    }
         /*
        
     */
+}
+
+const showWithdrawl = async () => { 
+    setIsWithdrawl(!isWithdrawl)
+    setIsDeposit(false)
+}
+
+const showDeposit = async () => { 
+   setIsDeposit(!isDeposit)
+   setIsWithdrawl(false)
 }
  
 const getUserData = async () => { 
@@ -105,15 +124,19 @@ const getUserData = async () => {
 
         <main> 
             <div>
-                
+
             </div>
             <div style={{display: 'flex', justifyContent: 'left', alignItems: 'center', gap: 15}}>
                 <h2>Welcome {userProperties.username} </h2>
                 <p>current balance: {userProperties.balance}</p>
                 <Link to="/games">Games</Link>
             </div>
-            <section style={{}}>
+            <section>
                 <div>
+                    <button type="submit" id="withdrawl"style={{marginRight: 15}} onClick={showWithdrawl}>Make a withdrawl</button>
+                    <button type="submit" id="deposit"onClick={showDeposit}>Make a deposit</button>
+                </div>
+                <div style={ isDeposit && !isWithdrawl ? null : {display: 'none'}}>
                     <form onSubmit={submitFunds}>
                         <label style={{marginRight: 45}}>Deposit Funds</label>
                         <input type="number" name="deposit" value={deposit} onChange={depositHandler} style={{ marginRight: 10}}  />
@@ -121,7 +144,7 @@ const getUserData = async () => {
                     </form>
                 </div>
                 <br></br>
-                <div>
+                <div style={ isWithdrawl && !isDeposit ? null : {display: 'none'}}>
                     <form onSubmit={submitFunds}>
                         <label style={{marginRight: 45}}>Withdrawl Funds</label>
                         <input type="number" name="withdrawl" value={withdrawl} onChange={withdrawlHandler} style={{marginRight: 10}} />
