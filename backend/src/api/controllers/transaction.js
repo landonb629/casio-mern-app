@@ -59,7 +59,7 @@ const withdrawl = async (req, res) => {
         const newValue = Number(user.accountBalance) - Number(amount)
         user.accountBalance = newValue
         await user.save()
-        res.status(200).json({msg: `withdraw succeeded, new value: ${user.accountBalance}`})
+        res.status(200).json({user: {userId, username}, amount: newValue})
     } catch(error) { 
         res.status(200).json({msg: error})
     }

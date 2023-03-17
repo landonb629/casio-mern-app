@@ -2,16 +2,19 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../contexts/login";
 
 const Login = () => {
+
     const credentials = {
         username: '',
         password: ''
     }
+    const {user, setUser} = useGlobalContext()
     const navigate = useNavigate()
     const [creds, setCreds] = useState(credentials)
     const [isMember, setIsMember] = useState(false)
-    const [authenticated, setIsAuthenticated] = useState(Cookies.get('user') || false)
+    //const [authenticated, setIsAuthenticated] = useState(Cookies.get('user') || false)
 
     const handleChange = (e) => { 
        setCreds(creds => ({...creds, [e.target.name]: e.target.value}))
@@ -23,7 +26,7 @@ const Login = () => {
             try { 
                 const login = await loginUser()
                 const {userId, username} = login.payload 
-                userId ? setIsAuthenticated(true) : setIsAuthenticated(false)
+                userId ? setUser({...user, isAuthenticated: true}) : setUser({...user, isAuthenticated: false})
             } catch (error) { 
                 alert(error)
             }
@@ -31,7 +34,7 @@ const Login = () => {
             try { 
                 const register = await registerUser()
                 const {userId, username} = register.payload
-                userId ? setIsAuthenticated(true) : setIsAuthenticated(false)
+                userId ? setUser({...user, isAuthenticated: true}) : setUser({...user, isAuthenticated: false})
             } catch (error) { 
                 console.log(error)
                 alert(error)
@@ -72,15 +75,28 @@ const Login = () => {
 
         }
     }
+    const checkAuthentication = async () => { 
+        const userCookie = Cookies.get('user')
+        
+        if (!userCookie) { 
+           setUser({...user, isAuthenticated: false})
+        } else { 
+            setUser({...user, isAuthenticated: true})
+        }
+    }
 
     useEffect(()=> {
-        if (authenticated) { 
-            navigate('/')
+        checkAuthentication()
+        if (user.isAuthenticated) { 
+            navigate("/")
+        } else { 
+            console.log('user is not authenticated');
+            console.log(user);
         }
-    }, [authenticated])
+    }, [user.isAuthenticated])
 
     return(
-        <main>
+        <main style={{padding: 50}}>
              <h2>{ isMember ?  "Login" : "Register"  }</h2>
             <form onSubmit={submitAuthentication}>
                 <label >Username: </label>
