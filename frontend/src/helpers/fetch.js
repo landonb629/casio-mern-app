@@ -1,6 +1,5 @@
 const postData = async (url, data) => { 
     try { 
-        console.log(url, data);
          const dataObject = {amount: data}
          const fundData = await fetch(url, { 
            method: 'PATCH',
@@ -14,6 +13,14 @@ const postData = async (url, data) => {
        return response
     }  catch(error) { 
         return error
+    }
+}
+
+const getData = async (url) => { 
+    try { 
+
+    } catch(error) { 
+
     }
 }
 

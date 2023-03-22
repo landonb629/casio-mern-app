@@ -14,7 +14,6 @@ const Login = () => {
     const navigate = useNavigate()
     const [creds, setCreds] = useState(credentials)
     const [isMember, setIsMember] = useState(false)
-    //const [authenticated, setIsAuthenticated] = useState(Cookies.get('user') || false)
 
     const handleChange = (e) => { 
        setCreds(creds => ({...creds, [e.target.name]: e.target.value}))

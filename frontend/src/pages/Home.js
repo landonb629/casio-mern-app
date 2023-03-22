@@ -21,7 +21,6 @@ const Home = () => {
     
     const withdrawlHandler = (e) => { 
         setWithdrawl(e.target.value)
-        console.log(withdrawl)
     }
 
     const submitFunds = async (e) => {
@@ -48,8 +47,6 @@ const getUserData = async () => {
         })
               const response = await userData.json()
               const {accountBalance, username} = response.user
-              console.log(accountBalance)
-              console.log(username)
               setUser({...user, balance: accountBalance, username: username})
               console.log(user)
               setLoading(false)
