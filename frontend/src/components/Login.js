@@ -1,15 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useGlobalContext } from "../contexts/appcontext";
 
-
-const Login = () => { 
+const Login = () => {
 
     const credentials = {
         username: '',
         password: ''
     }
+    const {user, setUser} = useGlobalContext()
+    const navigate = useNavigate()
     const [creds, setCreds] = useState(credentials)
     const [isMember, setIsMember] = useState(false)
 
@@ -17,20 +19,21 @@ const Login = () => {
        setCreds(creds => ({...creds, [e.target.name]: e.target.value}))
     }
 
-    const submitLogin = async (e) => { 
+    const submitAuthentication = async (e) => { 
         e.preventDefault()
         if (isMember) { 
             try { 
                 const login = await loginUser()
-                console.log(login)
+                const {userId, username} = login.payload 
+                userId ? setUser({...user, isAuthenticated: true}) : setUser({...user, isAuthenticated: false})
             } catch (error) { 
-                console.log(error)
-                alert(error)
+                console.log(error);
             }
         } else { 
             try { 
                 const register = await registerUser()
-                console.log(register)
+                const {userId, username} = register.payload
+                userId ? setUser({...user, isAuthenticated: true}) : setUser({...user, isAuthenticated: false})
             } catch (error) { 
                 console.log(error)
                 alert(error)
@@ -71,36 +74,42 @@ const Login = () => {
 
         }
     }
-
-    const toggleMember = () => { 
-      if (isMember) { 
-        setIsMember(false)
-      } else { 
-          setIsMember(true)
-      }
+/*
+    const checkAuthentication = async () => { 
+        const userCookie = Cookies.get('user')
+        if (!userCookie) { 
+           setUser({...user, isAuthenticated: false})
+        } else { 
+            setUser({...user, isAuthenticated: true})
+        }
     }
-
+*/
+/*
+    useEffect(()=> {
+        checkAuthentication()
+        if (user.isAuthenticated) { 
+            navigate("/")
+        } 
+    }, [user.isAuthenticated])
+*/
     return(
-        <main>
-            <div>
-                <h2>{ isMember ?  "Login" : "Register"  }</h2>
-            </div>
-            <form onSubmit={submitLogin}>
+        <main style={{padding: 50}}>
+             <h2>{ isMember ?  "Login" : "Register"  }</h2>
+            <form onSubmit={submitAuthentication}>
                 <label >Username: </label>
                 <input type="text" name="username" onChange={handleChange}></input>
                 <br></br>
                 <br></br>
                 <label>Password: </label>
                 <input type="text" name="password" onChange={handleChange}></input>
-                <div>
                 <br></br>
                 <button type="submit">{!isMember ? "Register" : "Login" }</button>
-            </div>
             </form>
             <br></br>
             <div>
-                <button style={{ outline: 0, color: "inherit" }} onClick={toggleMember}>Already a member?</button>
+            <button style={{ outline: 0, color: "inherit" }} onClick={()=> {setIsMember(!isMember)}}>Already a member?</button>
             </div>
+                
         </main>
     )
 }

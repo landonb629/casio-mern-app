@@ -4,14 +4,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom'
-import AppContext from './contexts/login';
+import AppContext from './contexts/appcontext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  <BrowserRouter>
   <AppContext>
-    <BrowserRouter>
       <App />
-    </BrowserRouter>
   </AppContext>
+  </BrowserRouter>
 );
 

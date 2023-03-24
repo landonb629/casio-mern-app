@@ -1,6 +1,6 @@
 import React from "react";
 import {useState, useEffect} from 'react'
-import {useGlobalContext} from "../contexts/login"
+import {useGlobalContext} from "../contexts/appcontext"
 import postData from "../helpers/fetch"
 import {Link, useNavigate} from 'react-router-dom'
 import { Navigate } from "react-router-dom";
@@ -15,7 +15,6 @@ const Games = () => {
       try { 
         const url = "http://localhost:3007/api/v1/transaction/withdrawl"
         const purchaseGame = await postData(url, cost)
-        console.log(purchaseGame);
         alert(`thank you for playing ${name}, ${cost} has been withdrawn from your account`)
         setUser({...user, balance: purchaseGame.amount})
       } catch(error) { 
@@ -37,7 +36,7 @@ const Games = () => {
               } catch(error) { 
           }
       }
-
+/*
     useEffect(()=> { 
       if (!user.isAuthenticated) { 
            console.log('should be navigating user')
@@ -45,6 +44,7 @@ const Games = () => {
       } 
       getUserData()
    },[])
+*/
 
     
     useEffect(()=> { 

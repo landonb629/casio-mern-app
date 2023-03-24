@@ -23,9 +23,9 @@ const login = async (req, res) => {
         if (!username || !password) { 
             return res.status(404).json({msg: 'please register'})
         }
-        const user = await User.findOne({username})
+        const user = await User.findOne({username: username})
         if (!user) { 
-            res.status(404).json({msg: 'no user found'})
+            return res.status(404).json({msg: 'no user found'})
         }
         const isCorrectPassword = await user.comparePasswords(password)
         if (!isCorrectPassword) { 

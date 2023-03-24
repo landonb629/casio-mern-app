@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 import { Navigate, useNavigate } from "react-router-dom";
 import {Link} from 'react-router-dom'
 import postData from '../helpers/fetch'
-import { useGlobalContext } from "../contexts/login";
+import { useGlobalContext } from "../contexts/appcontext";
 
 const Home = () => { 
 
