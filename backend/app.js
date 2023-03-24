@@ -28,7 +28,7 @@ app.use('/api/v1/games', checkAuth, gameRoute)
 const start = async () => { 
     try { 
         await dbConnection()
-        app.listen(3007,()=> {
+        app.listen(3032,()=> {
             console.log('app is running on ')
         })
     } catch(error) { 

@@ -1,25 +1,26 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure_native from "@pulumi/azure-native";
+import createSubnets as createSubnets from "./functions.ts"
 
-// Create an Azure Resource Group
-const rgName = "testingResourceGroups"
-
+//resource variables
 const rgOptions = { 
     location: "eastus",
-    resourceGroupName: rgName
+    resourceGroupName: "casino-mern-app"
 }
 
 const network = { 
     name: "testing-virtualnetwork",
     location: "eastus",
-    resourceGroup: rgName,
+    resourceGroup: rgOptions.resourceGroupName,
     addressSpace: { 
-        addressPrefixes: ["10.100.1.0/24"]
+        addressPrefixes: ["10.100.0.0/16"]
     }
-
 }
-const resourceGroup = new azure_native.resources.ResourceGroup(rgName, rgOptions)
 
+// resource group
+const resourceGroup = new azure_native.resources.ResourceGroup(rgOptions.resourceGroupName, rgOptions)
+
+// virtual network 
 const virtualNetwork = new azure_native.network.VirtualNetwork(network.name, {
     resourceGroupName: network.resourceGroup,
     location: network.location,
@@ -28,6 +29,12 @@ const virtualNetwork = new azure_native.network.VirtualNetwork(network.name, {
         addressPrefixes: [network.addressSpace.addressPrefixes[0]]
     }
 })
+
+//subnets 
+const appGatewaySubnet = createSubnets("appGatewaySubnet", "10.100.1.0/24")
+const frontendSubnet = createSubnets("frontendSubnet", "10.100.2.0/24")
+const apiSubnet = createSubnets("apiSubnet", "10.100.3.0/24")
+
 
 
 

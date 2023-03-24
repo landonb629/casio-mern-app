@@ -1,0 +1,23 @@
+FROM phusion/passenger-nodejs 
+
+ARG env 
+ENV PASSENGER_APP_ENV=${env}
+
+RUN rm -f /etc/service/nginx/down 
+
+RUN rm /etc/nginx/sites-enabled/default
+
+ADD backend.conf /etc/nginx/sites-enabled/backend.conf 
+
+WORKDIR /home/app/casino-backend 
+
+COPY package.json package-lock.json /home/app/casino-backend/
+
+RUN npm install 
+
+RUN npm install -g pm2
+
+COPY startup.sh /etc/my_init.d/
+
+COPY --chown=app:app ./ .
+
