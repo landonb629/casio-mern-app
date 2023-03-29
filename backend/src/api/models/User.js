@@ -23,19 +23,17 @@ const User = new Schema({
 User.pre('save', async function(next) {
     try {
     const salt = await bcrypt.genSalt(10)
+    console.log(`creating password as: ${this.password}`)
     this.password = await bcrypt.hash(this.password, salt)
     next()
-    
     } catch(error) { 
        throw new Error(error)
     }
 })
 
 User.methods.comparePasswords = async function(givenPassword) { 
-        console.log(givenPassword);
-        console.log(this.password);
         const isMatch = await bcrypt.compare(givenPassword, this.password)
-        console.log(isMatch);
+        console.log(isMatch)
         return isMatch   
 }
 

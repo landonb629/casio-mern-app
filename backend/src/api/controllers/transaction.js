@@ -52,8 +52,8 @@ const withdrawl = async (req, res) => {
         }
         const {userId, username} = req.user 
         const user = await User.findOne({_id: userId })
-        if (user.accountBalance <= 0) { 
-            return res.status(200).json({msg: 'your account balance is at zero'})
+        if (user.accountBalance - amount <= 0) { 
+            return res.status(200).json({msg: 'please deposit more money in order to play this game'})
         }
         const transaction = await Transaction.create({amount: amount, user: userId, type: "Withdrawl"})
         const newValue = Number(user.accountBalance) - Number(amount)

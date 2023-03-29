@@ -4,18 +4,24 @@ import {useGlobalContext} from "../contexts/appcontext"
 import postData from "../helpers/fetch"
 import {Link, useNavigate} from 'react-router-dom'
 import { Navigate } from "react-router-dom";
+import Alert from '../components/Alert'
 const Games = () => { 
     const navigate = useNavigate()
     const [games, setGames] = useState([])
     const {user, setUser} = useGlobalContext() 
+    const [isAlert, setIsAlert] = useState(false)
 
 
 
     const playGame = async (name, cost) =>  {
       try { 
         const url = "http://localhost:3032/api/v1/transaction/withdrawl"
+        if (user.balance <= cost) { 
+          alert("sorry, you don't have enough money to play this game")
+        }
         const purchaseGame = await postData(url, cost)
-        alert(`thank you for playing ${name}, ${cost} has been withdrawn from your account`)
+        setIsAlert(!isAlert) 
+        //const text = `thank you for playing ${name}, ${cost} has been withdrawn from your account`
         setUser({...user, balance: purchaseGame.amount})
       } catch(error) { 
         console.log(error);
@@ -74,6 +80,9 @@ const Games = () => {
                <Link to="/">Home</Link>
                <h4>balance: {user.balance}</h4>
            </div>
+           {
+             isAlert ? <Alert alertText={"testing alert"} /> : ''
+           }
            <div>    
            {
             games.map((game)=>{
