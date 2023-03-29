@@ -13,7 +13,7 @@ const Games = () => {
 
     const playGame = async (name, cost) =>  {
       try { 
-        const url = "http://localhost:3007/api/v1/transaction/withdrawl"
+        const url = "http://localhost:3032/api/v1/transaction/withdrawl"
         const purchaseGame = await postData(url, cost)
         alert(`thank you for playing ${name}, ${cost} has been withdrawn from your account`)
         setUser({...user, balance: purchaseGame.amount})
@@ -25,7 +25,7 @@ const Games = () => {
     const getUserData = async () => { 
       try { 
           console.log('running get user data')
-          const userData = await fetch('http://localhost:3007/api/v1/transaction', {
+          const userData = await fetch('http://localhost:3032/api/v1/transaction', {
                   method: "GET",
                   credentials: 'include'
           })
@@ -50,7 +50,7 @@ const Games = () => {
     useEffect(()=> { 
       const getGames = async () => {
           try { 
-            const url = "http://localhost:3007/api/v1/games/"
+            const url = "http://localhost:3032/api/v1/games/"
             const request = await fetch(url, {
             method: "GET",
             credentials: "include",

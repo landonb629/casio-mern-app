@@ -12,25 +12,25 @@ const Home = () => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
     const [deposit, setDeposit] = useState(0)
-    const [withdrawl, setWithdrawl] = useState(0)
+    const [withdraw, setWithdraw] = useState(0)
     const [isShow, setIsShow] = useState(0)
 
     const depositHandler = (e) => { 
         setDeposit(e.target.value)
     }
     
-    const withdrawlHandler = (e) => { 
-        setWithdrawl(e.target.value)
+    const withdrawHandler = (e) => { 
+        setWithdraw(e.target.value)
     }
 
     const submitFunds = async (e) => {
         e.preventDefault()
-        const route =  isShow == 2 ? "withdrawl" : "deposit" 
-        const url = `http://localhost:3007/api/v1/transaction/${route}`
+        const route =  isShow == 2 ? "withdraw" : "deposit" 
+        const url = `http://localhost:3032/api/v1/transaction/${route}`
 
         if (isShow == 2) { 
-            const sendWithdrawl = await postData(url, withdrawl)
-            setUser({...user, balance: sendWithdrawl.amount})
+            const sendWithdraw = await postData(url, withdraw)
+            setUser({...user, balance: sendWithdraw.amount})
             
         } else if (isShow == 1 ) { 
             const sendDeposit = await postData(url, deposit)
@@ -41,7 +41,7 @@ const Home = () => {
 const getUserData = async () => { 
     try { 
         console.log('running get user data')
-        const userData = await fetch('http://localhost:3007/api/v1/transaction', {
+        const userData = await fetch('http://localhost:3032/api/v1/transaction', {
                 method: "GET",
                 credentials: 'include'
         })
@@ -55,12 +55,11 @@ const getUserData = async () => {
     }
  
     useEffect(()=> { 
-       if (!user.isAuthenticated) { 
-            console.log('should be navigating user')
-            navigate("/login")
-       } 
-       getUserData()
-    },[])
+       if (user.isAuthenticated) { 
+           setLoading(false)
+           getUserData()
+       }
+    },[user.isAuthenticated])
 
     if (loading) { 
         return <section><h2>loading...</h2></section>
@@ -78,7 +77,7 @@ const getUserData = async () => {
             </div>
             <section>
                 <div>
-                    <button type="submit" id="withdrawl"style={{marginRight: 15}} onClick={()=>{setIsShow(2)}}>Make a withdrawl</button>
+                    <button type="submit" id="withdraw"style={{marginRight: 15}} onClick={()=>{setIsShow(2)}}>Make a withdraw</button>
                     <button type="submit" id="deposit"onClick={()=> {setIsShow(1)}}>Make a deposit</button>
                 </div>
                 <div style={ isShow != 1 ? {display: 'none'} : null  }>
@@ -92,9 +91,9 @@ const getUserData = async () => {
                 <br></br>
                 <div style={ isShow != 2 ? {display: 'none'} : null }>
                     <form onSubmit={submitFunds}>
-                        <label style={{marginRight: 45}}>Withdrawl Funds</label>
-                        <input type="number" name="withdrawl" value={withdrawl} onChange={withdrawlHandler} style={{marginRight: 10}} />
-                        <button type="submit" style={{marginRight: 25}}>Withdrawl</button>
+                        <label style={{marginRight: 45}}>Withdraw Funds</label>
+                        <input type="number" name="withdraw" value={withdraw} onChange={withdrawHandler} style={{marginRight: 10}} />
+                        <button type="submit" style={{marginRight: 25}}>Withdraw</button>
                         <button onClick={()=>{setIsShow(0)}}>close</button>
                     </form>
                 </div>

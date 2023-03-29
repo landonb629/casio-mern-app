@@ -29,6 +29,7 @@ const login = async (req, res) => {
         }
         const isCorrectPassword = await user.comparePasswords(password)
         if (!isCorrectPassword) { 
+            console.log(isCorrectPassword);
             return res.status(404).json({msg: 'please provide a correct username and password'})
         }
         const payload = {userId: user._id, username: user.username }
@@ -46,22 +47,3 @@ const checkRoute = async (req, res) => {
 }
 
 module.exports = { register, login, checkRoute}
-
-
-/*
-authentication flow:
-- user registers
-- password is salted and hashed
-- token is generated
-- cookie is returned to the browser
-
-progress:
-- users register
-- password is salted and hashed
-- token is generated
-- returned to use in json
-- cookie is returned to the browser 
-
-
-
-*/

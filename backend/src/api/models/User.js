@@ -20,11 +20,11 @@ const User = new Schema({
     }
 })
 
-User.pre('save', async function() {
+User.pre('save', async function(next) {
     try {
     const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(this.password, salt)
-    this.password = hash
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
     
     } catch(error) { 
        throw new Error(error)
@@ -32,13 +32,11 @@ User.pre('save', async function() {
 })
 
 User.methods.comparePasswords = async function(givenPassword) { 
-    try { 
+        console.log(givenPassword);
+        console.log(this.password);
         const isMatch = await bcrypt.compare(givenPassword, this.password)
-        return isMatch
-    } catch (error) { 
-        return error
-    }
-    
+        console.log(isMatch);
+        return isMatch   
 }
 
 

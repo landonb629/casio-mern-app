@@ -43,7 +43,7 @@ const Login = () => {
 
     const loginUser = async () => { 
         try { 
-            const request = await fetch('http://localhost:3007/api/v1/auth/login', { 
+            const request = await fetch('http://localhost:3032/api/v1/auth/login', { 
                     method: "POST",
                     credentials: 'include',
                     headers: { 
@@ -60,7 +60,7 @@ const Login = () => {
 
     const registerUser = async () => { 
         try { 
-            const request = await fetch('http://localhost:3007/api/v1/auth/register', { 
+            const request = await fetch('http://localhost:3032/api/v1/auth/register', { 
                 method: 'POST',
                 credentials: 'include',
                 headers: { 

@@ -26,6 +26,8 @@ const AppContext = ({children}) => {
             navigate('/login')
         } else { 
             setUser({...user, isAuthenticated: true})
+            navigate("/")
+            
         }
     }
 
