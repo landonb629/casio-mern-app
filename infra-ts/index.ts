@@ -1,6 +1,6 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as azure_native from "@pulumi/azure-native";
-import createSubnets as createSubnets from "./functions.ts"
+
 
 //resource variables
 const rgOptions = { 
@@ -34,6 +34,51 @@ const virtualNetwork = new azure_native.network.VirtualNetwork(network.name, {
 const appGatewaySubnet = createSubnets("appGatewaySubnet", "10.100.1.0/24")
 const frontendSubnet = createSubnets("frontendSubnet", "10.100.2.0/24")
 const apiSubnet = createSubnets("apiSubnet", "10.100.3.0/24")
+
+//private DNS zone 
+const privateDnsZone = new azure_native.network.PrivateZone("lbabay.com", { 
+    location: "Global",
+    privateZoneName: "lbabay.com",
+    resourceGroupName: resourceGroup.name
+})
+
+
+//ACR registry 
+const privateRegistry = new azure_native.containerregistry.Registry("casinomern", { 
+    adminUserEnabled: true, 
+    location: rgOptions.location, 
+    registryName: "casinomern", 
+    resourceGroupName: resourceGroup.name,
+    sku: { 
+        name: "Standard"
+    }
+})
+
+//azure app service plan 
+const appServicePlan = new azure_native.web.AppServicePlan("asp", { 
+    resourceGroupName: resourceGroup.name, 
+    kind: "App",
+    sku: { 
+        name: "B1",
+        tier: "Basic"
+    }
+})
+
+
+
+
+
+// fuctions 
+
+function createSubnets(name: string, addressPrefix: string): string { 
+    let subnet = new azure_native.network.Subnet(`subnet-${name}`, { 
+        addressPrefix: addressPrefix,
+        resourceGroupName: resourceGroup.name,
+        subnetName: name,
+        virtualNetworkName: virtualNetwork.name
+    })
+    return `${subnet}`
+}
 
 
 
