@@ -1,44 +1,27 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
+import React from 'react'
+import { useContext, createContext, useEffect, useReducer, useState} from 'react'
+import { Navigate } from 'react-router'
 
-
-const GlobalContext = createContext()
+const GlobalContext = React.createContext()
 
 export const useGlobalContext = () => useContext(GlobalContext)
 
+const initialState = { 
+    username: 'lbabay',
+    balance: 100,
+    isAuthenticated: false
+}
 
 const AppContext = ({children}) => { 
-    const navigate = useNavigate()
-    const initialUser = { 
-        balance: '',
-        isAuthenticated: false,
-        username: '',
-        userId: ''
-    }
-    const [user, setUser] = useState(initialUser)
+    const [userInfo, setUserInfo] = useState(initialState)
 
-    const loadUser = async () => { 
-        console.log('firing the load user');
-        const cookie = Cookies.get('user')
-        if (!cookie) { 
-            console.log('didnt find a user');
-            navigate('/login')
-        } else { 
-            setUser({...user, isAuthenticated: true})
-            navigate("/")
-            
-        }
-    }
-
-    useEffect(()=> { 
-      loadUser()
-    },[])
-    
-    return <GlobalContext.Provider value={{user, setUser}}>
-        {children}
-    </GlobalContext.Provider>
+    return(
+        <GlobalContext.Provider value={{userInfo, setUserInfo}}>
+            {children}
+        </GlobalContext.Provider>
+    )
 }
 
 export default AppContext
+
 
