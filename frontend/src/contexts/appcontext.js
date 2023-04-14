@@ -7,7 +7,7 @@ const GlobalContext = React.createContext()
 export const useGlobalContext = () => useContext(GlobalContext)
 
 const initialState = { 
-    username: 'lbabay',
+    username: '',
     balance: 100,
     isAuthenticated: false
 }
