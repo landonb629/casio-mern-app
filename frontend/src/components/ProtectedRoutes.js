@@ -4,7 +4,7 @@ import { useEffect } from "react"
 
 const ProtectedRoutes = () => { 
     const { userInfo } = useGlobalContext()
-
+    
     return(
      userInfo.isAuthenticated ? <Outlet /> : <Navigate to="/login" />
     )

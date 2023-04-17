@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom'
 
 const Home = () => { 
     const {userInfo} = useGlobalContext()
-    console.log(userInfo);
     return <>
        <main>
            <section className="home-header">

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../contexts/appcontext'
 import  sendPost from '../helpers/sendPost'
+import setLocalInfo from '../helpers/setLocalInfo'
 
 
 
@@ -10,6 +11,7 @@ const LoginForm = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+    const [isRegister, setIsRegister] = useState(false)
 
     const credentials = { 
         username: username,
@@ -28,12 +30,30 @@ const LoginForm = () => {
 
     const submitForm = async (e) => { 
         e.preventDefault()
-        const url = "http://localhost:3032/api/v1/auth/register"
-        const login = await sendPost(url, credentials )
-        const loginResponse = await login.json()
-        const {userId, username} = loginResponse.payload
-        setUserInfo({...userInfo, isAuthenticated: true, username: username})
-        navigate("/")
+        const registerUrl = "http://localhost:3032/api/v1/auth/register"
+        const loginUrl = "http://localhost:3032/api/v1/auth/login"
+
+        if (isRegister) { 
+            const register = await sendPost(registerUrl, credentials )
+            const registerResponse = await register.json()
+            const {userId, username} = registerResponse.payload
+            setUserInfo({...userInfo, isAuthenticated: true, username: username})
+            navigate("/")
+        } else { 
+            console.log('running the login section');
+            const login = await sendPost(loginUrl, credentials )
+            const loginResponse = await login.json()
+            const {userId, username} = loginResponse.payload
+            setLocalInfo(loginResponse.payload)
+            setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId})
+            navigate("/")
+        }
+       
+    }
+
+    const registerToggle = () => { 
+        setIsRegister(!isRegister)
+        console.log(isRegister);
     }
 
     return(
@@ -52,8 +72,11 @@ const LoginForm = () => {
                         <input type="text" onChange={passwordInput} name="username" />
                     </label>
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit">{ isRegister ? 'Register' : 'Login'}</button>
             </form>
+            <div style={{ marginTop: 10 }}>
+                <button onClick={()=>registerToggle()} style={{ border: 'none', outline: 'none', background: 'none', textDecoration: 'underline'}}>Already a member?</button>
+            </div>
         </section>
     )
 }
