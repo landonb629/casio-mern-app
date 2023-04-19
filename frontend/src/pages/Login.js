@@ -10,6 +10,7 @@ const LoginPage = () => {
     const navigate = useNavigate()
     
     useEffect(() => { 
+       console.log(userInfo.isAuthenticated);
        if (userInfo.isAuthenticated) { 
            navigate("/")
        }

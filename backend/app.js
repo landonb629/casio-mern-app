@@ -2,17 +2,18 @@ const express = require('express')
 const app = express()
 const dbConnection = require('./src/config/database')
 const cookieParser = require('cookie-parser')
-app.use(express.json())
-app.use(cookieParser('cookieSig'))
+
 const { checkAuth } = require('./src/api/middleware/checkAuthentication')
 const cors = require('cors')
 
 const corsOptions = { 
     credentials: true,
-    origin: true
+    origin: 'http://localhost:3000'
 }
 app.use(cors(corsOptions))
 app.use(express.json())
+app.use(cookieParser())
+
 
 
 //routes 

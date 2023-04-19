@@ -11,7 +11,6 @@ import { useGlobalContext } from "./contexts/appcontext"
 function App() {
   const { userInfo} = useGlobalContext()
   const {isAuthenticated} = userInfo
-  console.log(isAuthenticated);
   return (
     <div>
       <nav style={{ display: 'flex', alignItems: 'center'}}>

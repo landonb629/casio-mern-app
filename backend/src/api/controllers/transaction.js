@@ -36,9 +36,13 @@ const deposit = async (req, res) => {
             return res.status(500).json({msg: 'transaction creation failed'})
         }
         const newValue = Number(user.accountBalance) + Number(amount) 
-        user.accountBalance = newValue
-        await user.save()
-        res.status(200).json({user: {userId, username}, amount: newValue})
+        const update = await User.findOneAndUpdate({_id: userId}, {accountBalance: newValue}, {new: true})
+        if (!update) { 
+            return res.status(403).json({msg: 'error'})
+        }
+        //user.accountBalance = newValue
+        //await user.save()
+        res.status(200).json({user: {userId, username}, amount: user.accountBalance})
     } catch(error) { 
         res.status(200).json({msg: error})
     }

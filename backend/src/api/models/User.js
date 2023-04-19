@@ -32,8 +32,9 @@ User.pre('save', async function(next) {
 })
 
 User.methods.comparePasswords = async function(givenPassword) { 
+        console.log(givenPassword);
         const isMatch = await bcrypt.compare(givenPassword, this.password)
-        console.log(isMatch)
+        console.log(`outcome of comparing password: ${isMatch}`)
         return isMatch   
 }
 

@@ -36,16 +36,18 @@ const LoginForm = () => {
         if (isRegister) { 
             const register = await sendPost(registerUrl, credentials )
             const registerResponse = await register.json()
-            const {userId, username} = registerResponse.payload
-            setUserInfo({...userInfo, isAuthenticated: true, username: username})
+            const {userId, username, balance} = registerResponse.payload
+            setLocalInfo(registerResponse.payload)
+            setUserInfo({...userInfo, isAuthenticated: true, username: username, balance: balance})
             navigate("/")
         } else { 
             console.log('running the login section');
             const login = await sendPost(loginUrl, credentials )
             const loginResponse = await login.json()
-            const {userId, username} = loginResponse.payload
+            const {userId, username, balance} = loginResponse.payload
+            console.log(loginResponse.payload);
             setLocalInfo(loginResponse.payload)
-            setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId})
+            setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: balance})
             navigate("/")
         }
        

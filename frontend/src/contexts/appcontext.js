@@ -1,9 +1,8 @@
 import React from 'react'
-import { useContext, createContext, useEffect, useReducer, useState} from 'react'
+import { useContext, createContext, useEffect, useState} from 'react'
 import Cookies from 'js-cookie'
-import setLocalInfo from '../helpers/setLocalInfo'
 
-const GlobalContext = React.createContext()
+const GlobalContext = createContext()
 
 export const useGlobalContext = () => useContext(GlobalContext)
 
@@ -21,11 +20,18 @@ const AppContext = ({children}) => {
 
     const checkAuth = async () => { 
         const getCookie = Cookies.get('user')
+        console.log(getCookie);
         const userId = localStorage.getItem('userId')
         const username = localStorage.getItem('username')
+        const balance = localStorage.getItem('balance')
+        console.log(balance);
         if (getCookie) { 
-            setUserInfo({...userInfo, isAuthenticated: true, userId: userId, username: username})
+            console.log('user is authenticated');
+            setUserInfo({...userInfo, isAuthenticated: true, userId: userId, username: username, balance: balance})
+        } else { 
+            console.log('user not authenticated');
         }
+
     }
 
 
