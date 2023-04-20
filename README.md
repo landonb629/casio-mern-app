@@ -20,3 +20,16 @@ Tech stack:
 - Github Actions 
 - CosmosDB
 - Terraform 
+
+
+# Azure container apps and Azure app service 
+
+Azure container apps 
+- full managed PaaS service for running microservices and container apps
+
+Some of the common use cases are: 
+    - backend APIs 
+    - background processes 
+    - microservices 
+
+Azure app service 
