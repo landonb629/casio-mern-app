@@ -34,10 +34,14 @@ const AppContext = ({children}) => {
 
     }
 
+    const getUserBalance = () => { 
+        
+    }
+
 
     useEffect(()=> { 
         checkAuth()
-    },[])
+    },[initialState])
 
     return(
         <GlobalContext.Provider value={{userInfo, setUserInfo}}>

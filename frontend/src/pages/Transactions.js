@@ -1,7 +1,9 @@
 import {useState} from 'react'
 import sendPatch from '../helpers/sendPatch'
+import { useGlobalContext } from '../contexts/appcontext'
 // true is deposit, false is withdraw
 const Transactions = () => { 
+    const {userInfo, setUserInfo} = useGlobalContext()
     const [transactionType, setTransactionType] = useState(false)
     const [amount, setAmount] = useState(0)
 
@@ -9,20 +11,28 @@ const Transactions = () => {
         e.preventDefault()
         const url = "http://localhost:3032/api/v1/transaction"
         if (transactionType) { 
+            console.log(`depositing ${amount}`);
             const depositUrl = `${url}/deposit`
             const depositObject = {amount: amount}
             const request = await sendPatch(depositUrl, depositObject)
             const data = await request.json()
+            setUserInfo({...userInfo, balance: data.amount})
+            localStorage.setItem('balance', `${data.amount}`)
         } else { 
+            console.log(`withdraw amount: ${amount}`);
             const withdrawUrl = `${url}/withdraw`
-            const request = await sendPatch(withdrawUrl, amount)
+            const withdrawAmount = {amount: amount}
+            const request = await sendPatch(withdrawUrl, withdrawAmount)
             const data = await request.json()
-            alert(`new amount: ${data.amount}`)
+            setUserInfo({...userInfo, balance: data.amount})
+            localStorage.setItem('balance', `${data.amount}`)
         }
     }
 
+
     const transactionToggle = () => { 
         setTransactionType(!transactionType)
+        console.log(transactionType);
     }
 
     const amountHandler = (e) => { 

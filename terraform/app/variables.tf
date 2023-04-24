@@ -14,5 +14,9 @@ variable "sku_name" {
   default = "B3"
 }
 
+variable "managed_identity_name" {
+  default = "casino-mern-identity"
+}
+
 
 

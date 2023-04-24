@@ -42,6 +42,7 @@ const deposit = async (req, res) => {
         }
         //user.accountBalance = newValue
         //await user.save()
+        console.log({user: {userId, username}, amount: user.accountBalance})
         res.status(200).json({user: {userId, username}, amount: user.accountBalance})
     } catch(error) { 
         res.status(200).json({msg: error})
@@ -60,10 +61,16 @@ const withdrawl = async (req, res) => {
             return res.status(200).json({msg: 'please deposit more money in order to play this game'})
         }
         const transaction = await Transaction.create({amount: amount, user: userId, type: "Withdrawl"})
+        if (!transaction) { 
+            return res.status(403).json({msg: 'error'})
+        }
         const newValue = Number(user.accountBalance) - Number(amount)
-        user.accountBalance = newValue
-        await user.save()
-        res.status(200).json({user: {userId, username}, amount: newValue})
+        const update = await User.findOneAndUpdate({_id: userId}, {accountBalance: newValue}, {new: true})
+        if (!update) { 
+            return res.status(403).json({msg: 'error'})
+        }
+        console.log({user: {userId, username}, amount: user.accountBalance});
+        res.status(200).json({user: {userId, username}, amount: user.accountBalance})
     } catch(error) { 
         res.status(200).json({msg: error})
     }
