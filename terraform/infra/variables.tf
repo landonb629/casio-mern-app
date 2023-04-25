@@ -2,6 +2,10 @@ variable "rg_name" {
   default = "casino-mern-app"
 }
 
+variable "managed_identity_name" {
+  default = "casino-mern-identity"
+}
+
 variable "location" {
   default = "eastus"
 }
@@ -32,10 +36,6 @@ variable "asg-name" {
   default = "api-asg"
 }
 
-variable "cosmos_db_account" {
-  default = "casino-mern-app"
-}
-
 variable "container_registry" {
   default = "casinoMernRegistry"
 }
@@ -59,5 +59,13 @@ variable "docker-registry-server-url" {
 
 variable "docker-registry-server-username" {
   default = ""
+}
+
+variable "cosmos_db" {
+  default = "casino-db"
+}
+
+variable "cosmos_db_account" {
+  default = "casino-db"
 }
 

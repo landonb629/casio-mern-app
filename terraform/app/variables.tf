@@ -18,5 +18,13 @@ variable "managed_identity_name" {
   default = "casino-mern-identity"
 }
 
+variable "starter_image" {
+  default = "casinomernregistry.azurecr.io/casino-frontend"
+}
+
+variable "starter_image_tag" {
+  default = "v1.4"
+}
+
 
 

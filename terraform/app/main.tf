@@ -1,3 +1,4 @@
+## app service plan ##
 resource "azurerm_service_plan" "webapp_plan" {
   name = var.webapp_plan_name
   resource_group_name = var.rg_name 
@@ -6,12 +7,16 @@ resource "azurerm_service_plan" "webapp_plan" {
   sku_name = var.sku_name 
 }
 
-resource "azurerm_user_assigned_identity" "application-identity" {
-  location = var.location 
-  name = var.managed_identity_name
+data "azurerm_resource_group" "rg" {
+  name = "casino-mern-app"
+}
+
+data "azurerm_user_assigned_identity" "casino-mern" {
+  name = "casino-mern-identity"
   resource_group_name = var.rg_name
 }
 
+## web app ## 
 resource "azurerm_linux_web_app" "casino-frontend" {
   name = "casino-frontend"
   resource_group_name = var.rg_name 
@@ -24,7 +29,7 @@ resource "azurerm_linux_web_app" "casino-frontend" {
 
   identity {
     type = "UserAssigned"
-    identity_ids = azurerm_user_assigned_identity.application_identity.id
+    identity_ids = [data.azurerm_user_assigned_identity.casino-mern.id]
   }
 
   site_config {
@@ -34,8 +39,8 @@ resource "azurerm_linux_web_app" "casino-frontend" {
     default_documents = []
 
     application_stack {
-      docker_image = var.starter-image
-      docker_image_tag = var.start-image-tag
+      docker_image = var.starter_image
+      docker_image_tag = var.starter_image_tag
     }
   }
 

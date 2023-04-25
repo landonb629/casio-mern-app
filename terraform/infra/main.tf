@@ -1,6 +1,21 @@
+
 resource "azurerm_resource_group" "rg" {
   name = var.rg_name
   location = var.location
+}
+
+## managed identity ## 
+
+resource "azurerm_user_assigned_identity" "application-identity" {
+  location = var.location 
+  name = var.managed_identity_name
+  resource_group_name = var.rg_name
+}
+
+resource "azurerm_role_assignment" "role-assignment" {
+  scope = azurerm_resource_group.rg.id
+  role_definition_name = "ACRPull"
+  principal_id = azurerm_user_assigned_identity.application-identity.principal_id
 }
 
 ## virtual network ##
@@ -21,6 +36,7 @@ resource "azurerm_subnet" "subnets" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = [each.value]
   service_endpoints = each.key == "app" ? ["Microsoft.AzureCosmosDB"] : []
+  
 } 
 
 ## application security group ##
@@ -92,9 +108,62 @@ resource "azurerm_container_registry" "registry" {
 }
 
 
+## azure cosmosDB ##
+
+resource "azurerm_cosmosdb_account" "db-account" {
+name =   var.cosmos_db_account
+resource_group_name = azurerm_resource_group.rg.name
+location = var.location
+offer_type = "Standard"
+kind = "MongoDB"
+
+consistency_policy {
+  consistency_level = "BoundedStaleness"
+}
+
+geo_location {
+  location = "eastus"
+  failover_priority = 0
+}
+
+enable_automatic_failover = false
+public_network_access_enabled = true
+
+is_virtual_network_filter_enabled = true
+
+virtual_network_rule {
+  id = azurerm_subnet.subnets["app"].id
+  ignore_missing_vnet_service_endpoint = true
+}
+
+
+depends_on = [
+  azurerm_virtual_network.vnet
+]
+}
+
+resource "azurerm_cosmosdb_mongo_database" "login-db" {
+  name = var.cosmos_db
+  resource_group_name = azurerm_resource_group.rg.name
+  account_name = azurerm_cosmosdb_account.db-account.name
+
+  
+  depends_on = [
+    azurerm_cosmosdb_account.db-account
+  ]
+}
+
 ## private dns zone 
 
 resource "azurerm_private_dns_zone" "priv_dns_zone" {
   name = "lbabay.com"
   resource_group_name = var.rg_name
 }
+
+resource "azurerm_private_dns_zone_virtual_network_link" "priv_dns_zone_link" {
+  name = "lbabay-priv-dns-zone"
+  resource_group_name = azurerm_resource_group.rg.name
+  private_dns_zone_name = azurerm_private_dns_zone.priv_dns_zone.name
+  virtual_network_id = azurerm_virtual_network.vnet.id
+}
+

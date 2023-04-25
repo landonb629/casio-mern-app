@@ -1,4 +1,4 @@
-FROM phusion/passenger-nodejs 
+FROM --platform=amd64 phusion/passenger-nodejs 
 
 ARG env 
 ENV PASSENGER_APP_ENV=${env}

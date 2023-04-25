@@ -10,6 +10,8 @@ services:
       - type: bind 
         source: ./backend
         target: /usr/src/app
+    environment:
+      - NODE_ENV=development
     depends_on:
       - db
     

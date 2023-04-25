@@ -33,3 +33,19 @@ Some of the common use cases are:
     - microservices 
 
 Azure app service 
+
+
+
+## building the local dev environment 
+
+building production image 
+
+environment variables expected: 
+- PASSENGER_APP_ENV
+- DB_HOST
+- DB_PORT
+- DB_USERNAME
+- DB_PASSWORD
+```
+docker build -f Dockerfile.prod -t casino-backend:v1.0 .
+```
