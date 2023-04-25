@@ -26,24 +26,20 @@ const showTransaction = async (req, res) => {
 
 const deposit = async (req, res) => { 
     try {  
-        console.log('hitting deposit route')
+        console.log(`received the following value to deposit: ${req.body.amount}`);
         const {amount} = req.body
-        console.log(amount)
         const {userId, username} = req.user
-        const user = await User.findOne({_id: userId})
+        console.log(userId, username)
         const transaction = await Transaction.create({amount: amount, user: userId, type: "Deposit"})
         if (!transaction) { 
             return res.status(500).json({msg: 'transaction creation failed'})
         }
-        const newValue = Number(user.accountBalance) + Number(amount) 
-        const update = await User.findOneAndUpdate({_id: userId}, {accountBalance: newValue}, {new: true})
+        const update = await User.findOneAndUpdate({_id: userId}, {$inc: {accountBalance: amount}}, {new: true})
         if (!update) { 
             return res.status(403).json({msg: 'error'})
         }
-        //user.accountBalance = newValue
-        //await user.save()
-        console.log({user: {userId, username}, amount: user.accountBalance})
-        res.status(200).json({user: {userId, username}, amount: user.accountBalance})
+        console.log({user: {userId, username}, amount: update.accountBalance})
+        res.status(200).json({amount: update.accountBalance})
     } catch(error) { 
         res.status(200).json({msg: error})
     }
@@ -56,21 +52,15 @@ const withdrawl = async (req, res) => {
             return res.status(404).json({msg: 'please include an amount to withdrawl'})
         }
         const {userId, username} = req.user 
-        const user = await User.findOne({_id: userId })
-        if (user.accountBalance - amount <= 0) { 
-            return res.status(200).json({msg: 'please deposit more money in order to play this game'})
-        }
         const transaction = await Transaction.create({amount: amount, user: userId, type: "Withdrawl"})
         if (!transaction) { 
             return res.status(403).json({msg: 'error'})
         }
-        const newValue = Number(user.accountBalance) - Number(amount)
-        const update = await User.findOneAndUpdate({_id: userId}, {accountBalance: newValue}, {new: true})
+        const update = await User.findOneAndUpdate({_id: userId}, { $inc: {accountBalance: -amount}}, {new: true})
         if (!update) { 
             return res.status(403).json({msg: 'error'})
         }
-        console.log({user: {userId, username}, amount: user.accountBalance});
-        res.status(200).json({user: {userId, username}, amount: user.accountBalance})
+        res.status(200).json({amount: update.accountBalance})
     } catch(error) { 
         res.status(200).json({msg: error})
     }

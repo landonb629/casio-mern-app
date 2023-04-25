@@ -15,8 +15,7 @@ const User = new Schema({
     },
     accountBalance: { 
         type: Number,
-        default: 0,
-        immutable: false
+        min: [0, 'account balance cannot go below 0']
     }
 })
 

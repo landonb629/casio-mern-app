@@ -11,6 +11,7 @@ const sendPatch = async (url, data) => {
         body: JSON.stringify(data)
     }
     const sendRequest = await fetch(url, requestConfig)
+    console.log(sendRequest)
     return sendRequest
 }
 

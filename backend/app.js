@@ -23,7 +23,7 @@ const gameRoute = require('./src/api/routes/game')
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/transaction', checkAuth, transactionRoutes)
-app.use('/api/v1/games', checkAuth, gameRoute)
+app.use('/api/v1/games', gameRoute)
 
 
 const start = async () => { 

@@ -5,7 +5,12 @@ const setLocalInfo= (payload) => {
     if (!getUserId) { 
       localStorage.setItem('userId', `${payload.userId}`)
       localStorage.setItem('username', `${payload.username}`)
-      localStorage.setItem('balance', `${payload.balance}`)
+      if (payload.balance === undefined) { 
+        localStorage.setItem('balance', `0`)
+      } else { 
+        localStorage.setItem('balance', `${payload.balance}`)
+      }
+     
     } else { 
         console.log('userId already set');
     }

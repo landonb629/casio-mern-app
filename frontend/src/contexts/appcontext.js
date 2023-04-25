@@ -34,10 +34,10 @@ const AppContext = ({children}) => {
 
     }
 
-    const getUserBalance = () => { 
-        
+    const getBalance = async () => { 
+        const userBalance = localStorage.getItem('balance')
+        setUserInfo({...userInfo, balance: userBalance})
     }
-
 
     useEffect(()=> { 
         checkAuth()
