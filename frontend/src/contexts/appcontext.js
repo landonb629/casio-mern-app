@@ -27,6 +27,7 @@ const AppContext = ({children}) => {
         console.log(balance);
         if (getCookie) { 
             console.log('user is authenticated');
+            console.log('getting the information about the user');
             setUserInfo({...userInfo, isAuthenticated: true, userId: userId, username: username, balance: balance})
         } else { 
             console.log('user not authenticated');

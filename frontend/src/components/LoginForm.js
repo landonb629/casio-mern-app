@@ -37,7 +37,7 @@ const LoginForm = () => {
             const register = await sendPost(registerUrl, credentials )
             const registerResponse = await register.json()
             const {userId, username, balance} = registerResponse.payload
-            setLocalInfo(registerResponse.payload)
+            //setLocalInfo(registerResponse.payload)
             setUserInfo({...userInfo, isAuthenticated: true, username: username, balance: balance})
             navigate("/")
         } else { 
@@ -45,8 +45,8 @@ const LoginForm = () => {
             const login = await sendPost(loginUrl, credentials )
             const loginResponse = await login.json()
             const {userId, username, balance} = loginResponse.payload
-            console.log(loginResponse.payload);
-            setLocalInfo(loginResponse.payload)
+            console.log({userId: userId, balance: balance, username: username});
+           // setLocalInfo()
             setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: balance})
             navigate("/")
         }

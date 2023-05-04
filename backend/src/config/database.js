@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const dbConnection = () => {
     try { 
         if (process.env.NODE_ENV === "development") { 
-            return mongoose.connect("mongodb://192.168.10.10:27017", {
+            return mongoose.connect("mongodb://db:27017", {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
