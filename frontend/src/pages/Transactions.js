@@ -16,9 +16,8 @@ const Transactions = () => {
             const depositObject = {amount: amount}
             const request = await sendPatch(depositUrl, depositObject)
             const data = await request.json()
-            console.log(data);
-            setUserInfo({...userInfo, balance: data.accountBalance})
-            console.log(userInfo);
+            setUserInfo({...userInfo, balance: data.accountBalance})    
+            console.log(`user balance has been updated: ${userInfo.balance}`);
             localStorage.setItem('balance', `${data.amount}`)
         } else { 
             console.log(`withdraw amount: ${amount}`);
@@ -26,7 +25,6 @@ const Transactions = () => {
             const withdrawAmount = {amount: amount}
             const request = await sendPatch(withdrawUrl, withdrawAmount)
             const data = await request.json()
-            console.log(data);
             setUserInfo({...userInfo, balance: data.amount})
             console.log(userInfo);
             localStorage.setItem('balance', `${data.amount}`)

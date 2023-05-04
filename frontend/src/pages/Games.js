@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useGlobalContext } from "../contexts/appcontext"
+import sendPatch from "../helpers/sendPatch"
 const Games = () => { 
   const {userInfo} = useGlobalContext()
   const [games, setGames] = useState([])
@@ -29,6 +30,19 @@ const Games = () => {
     }
   }
 
+  const playGame = async (game) => { 
+    try {
+      const url = "http://localhost:3032/api/v1/transaction/withdraw" 
+      const data = {amount: game}
+      console.log(data);
+      const request = await sendPatch(url, data)
+      const response = await request.json()
+      localStorage.setItem('balance', response.amount)
+    } catch (error) { 
+      console.log(error);
+    }
+  }
+
   useEffect(()=> { 
     populateGames()
   },[])
@@ -48,6 +62,7 @@ const Games = () => {
                 <div key={i}>
                   <h4>{game.name}</h4>
                   <p>{game.cost}</p>
+                  <button type="submit" onClick={()=>playGame(game.cost)}>play {game.name}</button>
                 </div>
               </>
             })

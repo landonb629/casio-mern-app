@@ -24,25 +24,18 @@ const AppContext = ({children}) => {
         const userId = localStorage.getItem('userId')
         const username = localStorage.getItem('username')
         const balance = localStorage.getItem('balance')
-        console.log(balance);
         if (getCookie) { 
-            console.log('user is authenticated');
-            console.log('getting the information about the user');
+            console.log('get cookie is true');
             setUserInfo({...userInfo, isAuthenticated: true, userId: userId, username: username, balance: balance})
         } else { 
-            console.log('user not authenticated');
+            setUserInfo({...userInfo, isAuthenticated: false})
         }
 
     }
 
-    const getBalance = async () => { 
-        const userBalance = localStorage.getItem('balance')
-        setUserInfo({...userInfo, balance: userBalance})
-    }
-
     useEffect(()=> { 
         checkAuth()
-    },[initialState])
+    },[])
 
     return(
         <GlobalContext.Provider value={{userInfo, setUserInfo}}>

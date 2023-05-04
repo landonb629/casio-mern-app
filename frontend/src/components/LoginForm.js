@@ -46,8 +46,17 @@ const LoginForm = () => {
             const loginResponse = await login.json()
             const {userId, username, balance} = loginResponse.payload
             console.log({userId: userId, balance: balance, username: username});
-           // setLocalInfo()
-            setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: balance})
+            if (balance === undefined) { 
+                localStorage.setItem('balance', 0)
+                localStorage.setItem('username', username)
+                localStorage.setItem('userId', userId)
+                setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: 0})
+            } else { 
+                localStorage.setItem('balance', balance)
+                localStorage.setItem('username', username)
+                localStorage.setItem('userId', userId)
+                setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: balance})
+            }
             navigate("/")
         }
        
