@@ -9,7 +9,7 @@ const Transactions = () => {
 
     const transactionSubmissions = async (e) => { 
         e.preventDefault()
-        const url = "http://localhost:3032/api/v1/transaction"
+        const url = "/api/v1/transaction"
     if (transactionType === true) { 
             console.log(`depositing ${amount}`);
             const depositUrl = `${url}/deposit`

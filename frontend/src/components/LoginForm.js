@@ -30,15 +30,24 @@ const LoginForm = () => {
 
     const submitForm = async (e) => { 
         e.preventDefault()
-        const registerUrl = "http://localhost:3032/api/v1/auth/register"
-        const loginUrl = "http://localhost:3032/api/v1/auth/login"
+        const registerUrl = "/api/v1/auth/register"
+        const loginUrl = "/api/v1/auth/login"
 
         if (isRegister) { 
             const register = await sendPost(registerUrl, credentials )
             const registerResponse = await register.json()
             const {userId, username, balance} = registerResponse.payload
-            //setLocalInfo(registerResponse.payload)
-            setUserInfo({...userInfo, isAuthenticated: true, username: username, balance: balance})
+            if (balance === undefined) { 
+                localStorage.setItem('balance', 0)
+                localStorage.setItem('username', username)
+                localStorage.setItem('userId', userId)
+                setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: 0})
+            } else { 
+                localStorage.setItem('balance', balance)
+                localStorage.setItem('username', username)
+                localStorage.setItem('userId', userId)
+                setUserInfo({...userInfo, isAuthenticated: true, username: username, userId: userId, balance: balance})
+            }
             navigate("/")
         } else { 
             console.log('running the login section');

@@ -18,7 +18,7 @@ const Games = () => {
           'Access-Control-Allow-Origin': '*'
         }
       }
-      const url = "http://localhost:3032/api/v1/games/"
+      const url = "/api/v1/games/"
       const request = await fetch(url)
       const response = await request.json()
       console.log(response.game);
@@ -32,7 +32,7 @@ const Games = () => {
 
   const playGame = async (game) => { 
     try {
-      const url = "http://localhost:3032/api/v1/transaction/withdraw" 
+      const url = "/api/v1/transaction/withdraw" 
       const data = {amount: game}
       console.log(data);
       const request = await sendPatch(url, data)

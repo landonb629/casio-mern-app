@@ -8,7 +8,7 @@ const cors = require('cors')
 
 const corsOptions = { 
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: process.env.PASSENGER_APP_ENV ? "*" : "http://localhost:3000"
 }
 app.use(cors(corsOptions))
 app.use(express.json())
