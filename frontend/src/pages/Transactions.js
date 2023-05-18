@@ -9,7 +9,7 @@ const Transactions = () => {
 
     const transactionSubmissions = async (e) => { 
         e.preventDefault()
-        const url = "/api/v1/transaction"
+        const url = process.env.PASSENGER_APP_ENV ? "https://cainoapi.victoriousocean-a1eb10ff.eastus.azurecontainerapps.io/api/v1/transaction" : "/api/v1/auth/transaction"
     if (transactionType === true) { 
             console.log(`depositing ${amount}`);
             const depositUrl = `${url}/deposit`

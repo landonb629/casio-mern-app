@@ -36,7 +36,9 @@ resource "azurerm_subnet" "subnets" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = [each.value]
   service_endpoints = each.key == "app" ? ["Microsoft.AzureCosmosDB"] : []
-  
+  depends_on = [
+    azurerm_virtual_network.vnet
+  ]
 } 
 
 ## application security group ##

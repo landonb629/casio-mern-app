@@ -11,15 +11,15 @@ variable "location" {
 }
 
 variable "vnet_cidr" {
-  default = "10.10.0.0/22"
+  default = "10.0.0.0/16"
 }
 
 variable "subnets" {
   type = map(string)
   default = { 
-      "web" = "10.10.0.0/24",
-      "app" = "10.10.1.0/24",
-      "db" = "10.10.2.0/24"
+      "web" = "10.0.0.0/24"
+      "app" = "10.0.4.0/23",
+      "db" = "10.0.6.0/24"
   }
 }
 
