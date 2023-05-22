@@ -6,9 +6,13 @@ const cookieParser = require('cookie-parser')
 const { checkAuth } = require('./src/api/middleware/checkAuthentication')
 const cors = require('cors')
 // adding CORS domain to get around these errors
+// need to add all for the origins to get away from 
 const corsOptions = { 
     credentials: true,
-    origin: process.env.PASSENGER_APP_ENV ? process.env.CORS_DOMAIN : "http://localhost:3000"
+    origin:  '*',
+    methods: ['GET', 'PATCH', 'POST', 'DELETE', 'PUT']
+        
+    
 }
 app.use(cors(corsOptions))
 app.use(express.json())

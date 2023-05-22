@@ -2,12 +2,11 @@ const sendPatch = async (url, data) => {
     try{ 
         console.log(`sending the following data: ${data}`);
         const requestConfig = { 
-            method: 'PATCH',
+            method: 'POST',
             credentials: 'include',
             headers: { 
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
             },
             body: JSON.stringify(data)
         }

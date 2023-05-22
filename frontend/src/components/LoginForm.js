@@ -31,8 +31,8 @@ const LoginForm = () => {
     const submitForm = async (e) => { 
         try{
         e.preventDefault()
-        const registerUrl = "https://casinoapi.redstone-29af7082.eastus.azurecontainerapps.io/api/v1/auth/register"  //process.env.APP_ENV ? `${process.env.CORS_DOMAIN}/api/v1/auth/register` : "http://localhost:3032/api/v1/auth/register"
-        const loginUrl =  "https://casinoapi.redstone-29af7082.eastus.azurecontainerapps.io/api/v1/auth/login" //process.env.APP_ENV ? `${process.env.CORS_DOMAIN}/api/v1/auth/login` : "http://localhost:3032/api/v1/auth/login"
+        const registerUrl = '/api/v1/auth/register'
+        const loginUrl = '/api/v1/auth/login' 
 
         if (isRegister) { 
             const register = await sendPost(registerUrl, credentials )

@@ -2,6 +2,14 @@ from azure.identity import DefaultAzureCredential
 from azure.mgmt.appcontainers import ContainerAppsAPIClient 
 import os
 
+managed_env_config = { 
+    "location": "East US",
+    "vnetConfiguration": { 
+        "infrastructureSubnetId": "",
+        "internal": "false",
+        
+    }
+}
 container_app_config = { 
     "location": "East US",
     "properties": {
@@ -16,8 +24,8 @@ container_app_config = {
     "template": {
         "containers": [ 
             {
-                "image": "casinomernregistry.azurecr.io/backend:v1.0",
-                "name": "backend-casino"
+                "image": "casinomernregistry.azurecr.io/backend:postfix",
+                "name": "casinoapi"
             }
         ]
     },

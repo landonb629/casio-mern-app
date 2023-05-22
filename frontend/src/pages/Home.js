@@ -7,15 +7,15 @@ const Home = () => {
     const {userInfo} = useGlobalContext()
     console.log(userInfo)
     const balance = localStorage.getItem('balance')
+    const username = localStorage.getItem('username')
     console.log(`local storage balance: ${balance}`)
-    console.log(`user state balance: ${userInfo.balance}`);
     return <>
        <main>
            <section className="home-header">
                <div>
                    <Logout />
                </div>
-               <h1>{`welcome home, ${userInfo.username}`}</h1>
+               <h1>{`welcome home, ${username}`}</h1>
                <div>
                    <h4>{`your current balance is: ${balance}`}</h4>
                </div>

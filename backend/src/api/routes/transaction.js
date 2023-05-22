@@ -5,8 +5,8 @@ const {showBalance, deposit, withdrawl, showTransaction} = require('../controlle
 
 Router.route('/').get(showBalance);
 Router.route('/transactions').get(showTransaction)
-Router.route('/deposit').patch(deposit);
-Router.route('/withdraw').patch(withdrawl)
+Router.route('/deposit').post(deposit);
+Router.route('/withdraw').post(withdrawl)
 
 
 module.exports = Router;
