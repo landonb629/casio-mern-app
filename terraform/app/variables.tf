@@ -26,5 +26,30 @@ variable "starter_image_tag" {
   default = "v1.4"
 }
 
+variable "backend-name" { 
+  default = "casinoapi"
+}
 
+variable "container_port" { 
+  default = 80
+}
 
+variable "app_env" { 
+  default = "casino-app-env"
+}
+
+variable "log-analytics-name" { 
+  default = "casino-law"
+}
+
+variable "backend_image" { 
+  default = "casinomernregistry.azurecr.io/backend:postfix"
+}
+
+variable "frontend_name" { 
+  default = "casino-frontend"
+}
+
+variable "frontend_image" { 
+  default = "casinomernregistry.azurecr.io/frontend:postfix"
+}
