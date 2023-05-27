@@ -9,7 +9,7 @@ const cors = require('cors')
 // need to add all for the origins to get away from 
 const corsOptions = { 
     credentials: true,
-    origin:  '*',
+    origin:  process.env.PASSENGER_APP_ENV ? '*' : 'http://localhost:3000',
     methods: ['GET', 'PATCH', 'POST', 'DELETE', 'PUT']
         
     

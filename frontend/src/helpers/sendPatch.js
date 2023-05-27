@@ -1,6 +1,6 @@
 const sendPatch = async (url, data) => { 
     try{ 
-        console.log(`sending the following data: ${data}`);
+        console.log(data)
         const requestConfig = { 
             method: 'POST',
             credentials: 'include',
@@ -10,11 +10,8 @@ const sendPatch = async (url, data) => {
             },
             body: JSON.stringify(data)
         }
-        console.log(requestConfig)
         const sendRequest = await fetch(url, requestConfig)
-        console.log(sendRequest)
         return sendRequest
-
     } catch(error) { 
         console.log(error);
     }

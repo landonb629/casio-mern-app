@@ -35,6 +35,8 @@ services:
       - type: bind 
         source: ./frontend
         target: /usr/src/app
+    environment:
+      - NODE_ENV=development
     
 volumes:
   mongo-db:

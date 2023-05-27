@@ -31,8 +31,8 @@ const LoginForm = () => {
     const submitForm = async (e) => { 
         try{
         e.preventDefault()
-        const registerUrl = '/api/v1/auth/register'
-        const loginUrl = '/api/v1/auth/login' 
+        const registerUrl = 'development' ? "http://localhost:3032/api/v1/auth/register" : '/api/v1/auth/register'
+        const loginUrl = 'development' ? "http://localhost:3032/api/v1/auth/login" : '/api/v1/auth/login' 
 
         if (isRegister) { 
             const register = await sendPost(registerUrl, credentials )

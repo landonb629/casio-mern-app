@@ -7,6 +7,7 @@ const showBalance = async (req, res) => {
         const user = await User.findOne({_id: userId}).select("-password")
         res.status(200).json({user})
     } catch(error) { 
+        console.log(error)
         res.status(200).json({msg: error})
     }
 }
