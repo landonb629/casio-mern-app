@@ -1,7 +1,8 @@
 FROM --platform=amd64 phusion/passenger-nodejs 
+ 
+ENV PASSENGER_APP_ENV=production
 
-ARG env 
-ENV PASSENGER_APP_ENV=${env}
+ENV NODE_ENV=production
 
 RUN rm -f /etc/service/nginx/down 
 

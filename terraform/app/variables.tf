@@ -34,14 +34,48 @@ variable "log-analytics-name" {
   default = "casino-law"
 }
 
-variable "backend_image" { 
-  default = "casinomernregistry.azurecr.io/backend:postfix"
-}
-
 variable "frontend_name" { 
   default = "casino-frontend"
 }
 
+
+## supply variables here
+variable "backend_image" { 
+  default = "casinomernregistry.azurecr.io/backend:v2.1"
+}
+
+variable "passenger_app_env" { 
+  default = "production"
+}
+
+variable "db_name" { 
+  default = "casino-db"
+}
+
+variable "db_host" { 
+  default = "casino-db.mongo.cosmos.azure.com"
+}
+
+variable "db_username" { 
+  default = "casino-db"
+}
+
+variable "db_password" { 
+  default = "qgTh6mdovthOYg4sugmvAxxKvGnjv0iktmiYqufuW1Rf4igGjaIwrAPOfTL9hckRRMr1nOmiq1ZHACDbBnpOXQ=="
+}
+
+variable "db_port" { 
+  default = "10255"
+}
+
 variable "frontend_image" { 
-  default = "casinomernregistry.azurecr.io/frontend:finaltest"
+  default = "casinomernregistry.azurecr.io/frontend:v2.1"
+}
+
+variable "acr-password" { 
+  default = "135Rqa0Pupb4s0hQ+LWZAAN8zQyarPq5MbXyLDOFGu+ACRCKoyYe"
+}
+
+variable "cors_domain" { 
+  default = "redsky-4c0d990d.eastus.azurecontainerapps.io"
 }

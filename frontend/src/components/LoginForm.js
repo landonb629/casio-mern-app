@@ -3,6 +3,40 @@ import { useNavigate } from 'react-router-dom'
 import { useGlobalContext } from '../contexts/appcontext'
 import  sendPost from '../helpers/sendPost'
 import setLocalInfo from '../helpers/setLocalInfo'
+import styled from 'styled-components'
+
+const Wrapper = styled.div` 
+    .grid-container { 
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        width: 100vw;
+        height: 100vh
+    }
+    .grid-child { 
+        grid-column: 2 / 3;
+        grid-row: 2/ 3 ;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .username { 
+        padding: 10px 
+    }
+    .password { 
+        padding: 10px;
+    }
+    .login-btn { 
+        text-align: center;
+        height: 20px;
+    }
+    .btn { 
+        width: 50%;
+    }
+
+`
+
 
 
 
@@ -31,8 +65,8 @@ const LoginForm = () => {
     const submitForm = async (e) => { 
         try{
         e.preventDefault()
-        const registerUrl = 'development' ? "http://localhost:3032/api/v1/auth/register" : '/api/v1/auth/register'
-        const loginUrl = 'development' ? "http://localhost:3032/api/v1/auth/login" : '/api/v1/auth/login' 
+        const registerUrl = process.env.NODE_ENV == 'development' ? 'http://localhost:3032' : '/api/v1/auth/register' 
+        const loginUrl = process.env.NODE_ENV == 'development' ? 'http://localhost:3032' : '/api/v1/auth/login' 
 
         if (isRegister) { 
             const register = await sendPost(registerUrl, credentials )
@@ -81,8 +115,10 @@ const LoginForm = () => {
     }
 
     return(
-        <section>
-            <h2>Welcome to lbabay's virtual casino</h2>
+        <Wrapper>
+        <section className='grid-container'>
+            <div className='grid-child'>
+            <h2>Demo Casino App</h2>
             <form onSubmit={submitForm}>
                 <div className='username'>
                     <label>
@@ -96,12 +132,16 @@ const LoginForm = () => {
                         <input type="text" onChange={passwordInput} name="username" />
                     </label>
                 </div>
-                <button type="submit">{ isRegister ? 'Register' : 'Login'}</button>
+                <div className='login-btn'>
+                <button type="submit" className='btn'>{ isRegister ? 'Register' : 'Login'}</button>
+                </div>
             </form>
             <div style={{ marginTop: 10 }}>
                 <button onClick={()=>registerToggle()} style={{ border: 'none', outline: 'none', background: 'none', textDecoration: 'underline'}}>Already a member?</button>
             </div>
+            </div>
         </section>
+        </Wrapper>
     )
 }
 

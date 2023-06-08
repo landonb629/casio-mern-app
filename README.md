@@ -17,7 +17,6 @@ I plan on hosting this application on Azure app services for the frontend, and t
 
 Tech stack: 
 - Azure container apps 
-- Azure app services
 - Github Actions 
 - CosmosDB
 - Terraform 
@@ -49,7 +48,7 @@ Ingress configuration
     - allows you to split the traffic between multiple revisions of your application
 
 
-DNS 
+### DNS 
 
 resolving internal DNS names 
 - custom domains: 
@@ -57,9 +56,6 @@ resolving internal DNS names
 
 NOTE: you can find the static IP address of the container apps environment with the following command 
 ``` az containerapp env list ```
-
-## Communication from the frontend to the backend 
-In order for the fronted and backend to talk to either other, a private DNS zone must be configured for the container apps.
 
 The nginx configuration is what facilitates the communication between the frontend and the backend. the package.json uses the "proxy" option when developing locally, so when we are writing code, we only specify the path for the API request. ex: 
 
@@ -73,16 +69,65 @@ const fetch = async () => {
 }
 ```
 
-## building the local dev environment 
+##  the local dev environment 
 
-building production image 
+to run the application locally, run the following commands: 
 
-environment variables expected: 
-- PASSENGER_APP_ENV
-- DB_HOST
-- DB_PORT
-- DB_USERNAME
-- DB_PASSWORD
-```
-docker build -f Dockerfile.prod -t casino-backend:v1.0 .
-```
+``` docker-compose build ```
+
+``` docker-compose up ```
+
+
+# Steps to deploy on your own 
+
+1. Deploy the underlying infrastructure 
+
+``` cd terraform/infra ```
+
+NOTE: you can run terraform init, if you want to review what you are deploying first 
+
+``` terraform init && terraform apply -auto-approve ``` 
+
+
+2. build and push the application containers 
+
+- login to the az cli first 
+
+``` az login ``` 
+
+- authenticate to the ACR registry  
+
+``` az acr login --name casinomernregistry ``` 
+
+- run the build script (build.sh), the script accepts one argument 
+
+``` ./build.sh v1.0 ``` 
+
+
+3. deploy the application 
+
+``` cd terraform/app ``` 
+- find the information below and add that to the terraform variables file 
+
+- find the following information from the cosmos DB configuration 
+    - database name 
+    - database host 
+    - database port 
+    - database username 
+    - database password
+
+- find the following information from the azure container registry
+    - acr-username
+    - acr-password
+
+- find the following information from the terraform output 
+    - default_domain
+
+# NEED TO FIGURE OUT HOW TO DO REACT ENVIRONMENT VARIABLES 
+# NEED TO SETUP ENVIRONMENT CONFIGURATION FOR NODEJS ALSO FOR THE DEFAULT DOMAIN
+
+# SOLUTION 
+
+create conditional API variables for now, I know that doesn't scale but, right now that's all I need
+
+

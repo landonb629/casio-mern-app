@@ -170,3 +170,25 @@ resource "azurerm_private_dns_zone_virtual_network_link" "priv_dns_zone_link" {
   virtual_network_id = azurerm_virtual_network.vnet.id
 }
 
+// container app environment
+resource "azurerm_container_app_environment" "casino-app-env" { 
+  name = var.app_env 
+  location = "eastus"
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.casino-monitoring.id 
+  resource_group_name = azurerm_resource_group.rg.name 
+  infrastructure_subnet_id = azurerm_subnet.subnets["app"].id
+  internal_load_balancer_enabled = false 
+}
+
+// log analytics workspace 
+resource "azurerm_log_analytics_workspace" "casino-monitoring" { 
+  name = var.log-analytics-name 
+  location = var.location 
+  resource_group_name = azurerm_resource_group.rg.name 
+  sku = "PerGB2018"
+  retention_in_days = 30
+}
+
+output "default_domain" {
+  value = azurerm_container_app_environment.casino-app-env
+}

@@ -24,7 +24,7 @@ const Transactions = () => {
 
     const transactionSubmissions = async (e) => { 
         e.preventDefault()
-        const url = process.env.NODE_ENV == 'development' ? "http://localhost:3032/api/v1/transaction" : "/api/v1/transaction"
+        const url = "/api/v1/transaction"
     if (transactionType === true) { 
             const depositUrl = `${url}/deposit`
             const depositObject = {amount: amount}

@@ -49,6 +49,14 @@ variable "start-image-tag" {
   default = "v1.0"
 }
 
+variable "log-analytics-name" { 
+  default = "casino-law"
+}
+
+variable "app_env" { 
+  default = "casino-app-env"
+}
+
 variable "docker-registry-server-password" {
  default = "" 
 }

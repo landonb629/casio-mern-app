@@ -2,17 +2,14 @@ const express = require('express')
 const app = express()
 const dbConnection = require('./src/config/database')
 const cookieParser = require('cookie-parser')
-
 const { checkAuth } = require('./src/api/middleware/checkAuthentication')
 const cors = require('cors')
 // adding CORS domain to get around these errors
 // need to add all for the origins to get away from 
 const corsOptions = { 
     credentials: true,
-    origin:  process.env.PASSENGER_APP_ENV ? '*' : 'http://localhost:3000',
+    origin:  process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : `https://casino-frontend.${process.env.CORS_DOMAIN}`,
     methods: ['GET', 'PATCH', 'POST', 'DELETE', 'PUT']
-        
-    
 }
 app.use(cors(corsOptions))
 app.use(express.json())
