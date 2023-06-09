@@ -25,14 +25,19 @@ jobs:
           backend:
             - "backend/**"
     
-   # - name: build and push frontend
-    #  if: steps.filter.outputs.frontend == 'true'
-    #  run: | 
-     #   docker build -t casinomernregistry.azurecr.io/frontend:${{ steps.tag.outputs.sha }} -f Dockerfile.prod .
-      #  docker push casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha }} -f Dockerfile.prod .
+    - name: login to azure 
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-   # - name: build and push backend
-    #  if: steps.filter.outputs.backend == 'true'
-     # run: | 
-      #  docker build -t casinomernregistry.azurecr.io/backend:${{ steps.tag.outputs.sha }} -f Dockerfile.prod .
-       # docker push casinomernregistry.azurecr.io/backend:${{steps.tag.outputs.sha}} 
+    - name: build and push frontend
+      if: steps.filter.outputs.frontend == 'true'
+      run: | 
+        docker build -t casinomernregistry.azurecr.io/frontend:${{ steps.tag.outputs.sha }} -f Dockerfile.prod .
+        docker push casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha }} -f Dockerfile.prod .
+    
+    - name: build and push backend
+      if: steps.filter.outputs.backend == 'true'
+      run: | 
+        docker build -t casinomernregistry.azurecr.io/backend:${{ steps.tag.outputs.sha }} -f Dockerfile.prod .
+        docker push casinomernregistry.azurecr.io/backend:${{steps.tag.outputs.sha}} 

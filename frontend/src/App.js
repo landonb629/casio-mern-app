@@ -17,8 +17,6 @@ const Wrapper = styled.div`
     padding-right: 10px;
   }
 `
-
-
 function App() {
   const { userInfo} = useGlobalContext()
   const {isAuthenticated} = userInfo
