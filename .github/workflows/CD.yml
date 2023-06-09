@@ -8,7 +8,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    
     - name: findout which path changed 
       uses: dorny/paths-filter@v2
       id: filter
