@@ -9,9 +9,9 @@ import AppContext from './contexts/appcontext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-  <AppContext>
+    <AppContext>
       <App />
-  </AppContext>
+    </AppContext>
   </BrowserRouter>
 );
 

@@ -7,8 +7,8 @@ const register = async (req, res) => {
         if (!username || !password) { 
             return res.status(404).json({msg: 'must have username and password'})
         }
-        const user = await User.create({...req.body}) // {username: username, password: password}
-        const payload = {userId: user._id, username: user.username}
+        const user = await User.create({username: username, password: password}) // {username: username, password: password}
+        const payload = {userId: user._id, username: user.username, balance: user.accountBalance}
         const token = await createJWT({payload: payload})
         await addAuthCookie({res, token: token})
         res.status(200).json({payload})
@@ -29,13 +29,12 @@ const login = async (req, res) => {
         }
         const isCorrectPassword = await user.comparePasswords(password)
         if (!isCorrectPassword) { 
-            console.log(isCorrectPassword);
             return res.status(404).json({msg: 'please provide a correct username and password'})
         }
-        const payload = {userId: user._id, username: user.username }
+        const payload = {userId: user._id, username: user.username, balance: user.accountBalance }
         const token = await createJWT({payload: payload})
         await addAuthCookie({res, token: token})
-        res.status(200).json({payload: payload})
+        res.status(200).json({payload})
 
     } catch(error) { 
         res.status(500).json({msg: 'error encountered when trying to login'})

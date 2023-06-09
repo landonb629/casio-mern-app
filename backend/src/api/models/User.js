@@ -15,17 +15,16 @@ const User = new Schema({
     },
     accountBalance: { 
         type: Number,
-        default: 0,
-        immutable: false
+        min: [0, 'account balance cannot go below 0']
     }
 })
 
 User.pre('save', async function(next) {
     try {
     const salt = await bcrypt.genSalt(10)
+    console.log(`creating password as: ${this.password}`)
     this.password = await bcrypt.hash(this.password, salt)
     next()
-    
     } catch(error) { 
        throw new Error(error)
     }
@@ -33,9 +32,8 @@ User.pre('save', async function(next) {
 
 User.methods.comparePasswords = async function(givenPassword) { 
         console.log(givenPassword);
-        console.log(this.password);
         const isMatch = await bcrypt.compare(givenPassword, this.password)
-        console.log(isMatch);
+        console.log(`outcome of comparing password: ${isMatch}`)
         return isMatch   
 }
 

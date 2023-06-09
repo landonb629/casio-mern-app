@@ -46,9 +46,10 @@ const gameCreate = async (req, res) => {
             return res.status(500).json({msg: 'please add cost and name'})
         }
         const game = await Game.create({...req.body})
+        
         res.status(200).json({game})
     } catch(error) { 
-        res.status(500).json({msg: error})
+        res.status(500).json({msg: error, custom: "an error was encountered that made the try-catch fail"})
     }
 }
 

@@ -1,44 +1,49 @@
-import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
-
+import React from 'react'
+import { useContext, createContext, useEffect, useState} from 'react'
+import Cookies from 'js-cookie'
 
 const GlobalContext = createContext()
 
 export const useGlobalContext = () => useContext(GlobalContext)
 
+const initialState = { 
+    username: '',
+    balance: 0,
+    isAuthenticated: false,
+    userId: ''
+}
 
 const AppContext = ({children}) => { 
-    const navigate = useNavigate()
-    const initialUser = { 
-        balance: '',
-        isAuthenticated: false,
-        username: '',
-        userId: ''
-    }
-    const [user, setUser] = useState(initialUser)
+    const [userInfo, setUserInfo] = useState(initialState)
+    const [isLoading, setIsLoading] = useState(true)
 
-    const loadUser = async () => { 
-        console.log('firing the load user');
-        const cookie = Cookies.get('user')
-        if (!cookie) { 
-            console.log('didnt find a user');
-            navigate('/login')
+
+    const checkAuth = async () => { 
+        const getCookie = Cookies.get('user')
+        console.log(getCookie);
+        const userId = localStorage.getItem('userId')
+        const username = localStorage.getItem('username')
+        const balance = localStorage.getItem('balance')
+        if (getCookie) { 
+            console.log('get cookie is true');
+            setUserInfo({...userInfo, isAuthenticated: true, userId: userId, username: username, balance: balance})
         } else { 
-            setUser({...user, isAuthenticated: true})
-            navigate("/")
-            
+            setUserInfo({...userInfo, isAuthenticated: false})
         }
+
     }
 
     useEffect(()=> { 
-      loadUser()
+        checkAuth()
     },[])
-    
-    return <GlobalContext.Provider value={{user, setUser}}>
-        {children}
-    </GlobalContext.Provider>
+
+    return(
+        <GlobalContext.Provider value={{userInfo, setUserInfo}}>
+            {children}
+        </GlobalContext.Provider>
+    )
 }
 
 export default AppContext
+
 

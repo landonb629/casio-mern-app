@@ -10,6 +10,9 @@ services:
       - type: bind 
         source: ./backend
         target: /usr/src/app
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_ENDPOINT=http://localhost:3032
     depends_on:
       - db
     
@@ -33,6 +36,8 @@ services:
       - type: bind 
         source: ./frontend
         target: /usr/src/app
+    environment:
+      - NODE_ENV=development
     
 volumes:
   mongo-db:

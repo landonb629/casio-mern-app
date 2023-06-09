@@ -1,0 +1,34 @@
+name: CI pipeline 
+on: 
+  push:
+    paths:
+      - "frontend/**"
+      - "backend/**"
+    branches:
+      - "main"
+
+jobs:
+  build_job:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3 
+
+    - name: find out which path changed
+      uses: dorny/paths-filter@v2
+      id: filter 
+      with: 
+        filters: | 
+          frontend: 
+            - "frontend/**"
+          backend:
+            - "backend/**"
+    
+    - name: build and push frontend
+      if: steps.filter.outputs.frontend == 'true'
+      run: | 
+        echo "frontend was changed"
+    
+    - name: build and push backend
+      if: steps.filter.outputs.backend == 'true'
+      run: | 
+        echo "backend was changed"
