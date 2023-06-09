@@ -12,6 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3 
+    
+    - name: first 10 in SHA
+      id: tag
+      run : | 
+        echo "sha=$(git rev-parse --short HEAD) >> $GITHUB_OUTPUT"
 
     - name: find out which path changed
       uses: dorny/paths-filter@v2
@@ -23,12 +28,14 @@ jobs:
           backend:
             - "backend/**"
     
-    - name: build and push frontend
-      if: steps.filter.outputs.frontend == 'true'
-      run: | 
-        echo "frontend was changed"
+   # - name: build and push frontend
+    #  if: steps.filter.outputs.frontend == 'true'
+    #  run: | 
+     #   docker build -t casinomernregistry.azurecr.io/frontend:${{ steps.tag.outputs.sha }} -f Dockerfile.prod .
+      #  docker push casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha }} -f Dockerfile.prod .
     
-    - name: build and push backend
-      if: steps.filter.outputs.backend == 'true'
-      run: | 
-        echo "backend was changed"
+   # - name: build and push backend
+    #  if: steps.filter.outputs.backend == 'true'
+     # run: | 
+      #  docker build -t casinomernregistry.azurecr.io/backend:${{ steps.tag.outputs.sha }} -f Dockerfile.prod .
+       # docker push casinomernregistry.azurecr.io/backend:${{steps.tag.outputs.sha}} 

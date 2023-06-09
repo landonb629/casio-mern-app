@@ -1,0 +1,27 @@
+name: CD pipeline 
+on: 
+  workflow_dispatch:
+
+jobs:
+  deploy_code:
+    runs-on: ubuntu-latest
+    steps:
+    - name: findout which path changed 
+      uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: | 
+          frontend: 
+            - "frontend/**"
+          backend:
+            - "backend/**"
+    
+    - name: deploy frontend
+      if: steps.filter.outputs.frontend == 'true'
+      run: | 
+        echo "deploying code for frontend"
+    
+    - name: deploy backend
+      if: steps.filter.outputs.backend == 'true'
+      run: | 
+        echo "deploying code for frontend"
