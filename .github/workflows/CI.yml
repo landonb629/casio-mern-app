@@ -1,9 +1,6 @@
 name: CI pipeline 
 on: 
   push:
-    paths:
-      - "frontend/**"
-      - "backend/**"
     branches:
       - "main"
 

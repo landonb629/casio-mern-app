@@ -1,6 +1,15 @@
 name: CD pipeline 
 on: 
   workflow_dispatch:
+    inputs:
+      deploy_frontend:
+        type: boolean
+        description: to deploy frontend
+        default: false
+      deploy_backend:
+        type: boolean
+        description: to deploy backend
+        default: false
 
 jobs:
   deploy_code:
@@ -19,11 +28,11 @@ jobs:
             - "backend/**"
     
     - name: deploy frontend
-      if: steps.filter.outputs.frontend == 'true'
+      if: github.event.inputs.deploy_frontend == 'true'
       run: | 
         echo "deploying code for frontend"
     
     - name: deploy backend
-      if: steps.filter.outputs.backend == 'true'
+      if: github.event.inputs.deploy_backend == 'true'
       run: | 
         echo "deploying code for frontend"
