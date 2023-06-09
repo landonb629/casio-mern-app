@@ -88,16 +88,14 @@ NOTE: you can run terraform init, if you want to review what you are deploying f
 
 ``` terraform init && terraform apply -auto-approve ``` 
 
+**This may take up to 10 minutes**
+
 
 2. build and push the application containers 
 
 - login to the az cli first 
 
 ``` az login ``` 
-
-- authenticate to the ACR registry  
-
-``` az acr login --name casinomernregistry ``` 
 
 - run the build script (build.sh), the script accepts one argument 
 
@@ -107,27 +105,31 @@ NOTE: you can run terraform init, if you want to review what you are deploying f
 3. deploy the application 
 
 ``` cd terraform/app ``` 
-- find the information below and add that to the terraform variables file 
 
-- find the following information from the cosmos DB configuration 
-    - database name 
-    - database host 
-    - database port 
-    - database username 
-    - database password
+The following variables will need to be inputted to the variables.tf file located in the terraform/app directory.
+- backend-tag: you supply this value to the build script (ex: v1.0)
 
-- find the following information from the azure container registry
-    - acr-username
-    - acr-password
+- frontend-tag: you supply this value to the build script (ex: v1.0)
 
-- find the following information from the terraform output 
-    - default_domain
+- acr-password: run the following az cli command to get this value 
 
-# NEED TO FIGURE OUT HOW TO DO REACT ENVIRONMENT VARIABLES 
-# NEED TO SETUP ENVIRONMENT CONFIGURATION FOR NODEJS ALSO FOR THE DEFAULT DOMAIN
+``` az acr credential show -n casinomernregistry ```
 
-# SOLUTION 
+- cors_domain: this value will be supplied as an output when the infrastructure deployment is completed
 
-create conditional API variables for now, I know that doesn't scale but, right now that's all I need
+- db_password: run the following AZ cli command to get this value 
+
+``` az cosmosdb keys list --name casino-db --resource-group casino-mern-app ``` 
 
 
+4. visit the application 
+
+run the following command to find the fqdn 
+
+``` az containerapp show --name casino-frontend --resource-group casino-mern-app | jq .properties.latestRevisionFqdn ``` 
+
+put the FQDN in a browser with https:// in front
+
+if done correctly, you should be able to see the following image
+
+![app](app.png "app")

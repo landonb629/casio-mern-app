@@ -1,3 +1,28 @@
+## supply variables here
+variable "backend-tag" { 
+  default = "v1.0"
+}
+
+variable "db_password" { 
+  default = "dbsrZUpEPttaGT3KbhuAm12l4IVP1gKp9mB05xxRl17Zw9gRFVWeGG24AZaFAFYSYDW1uUa9A7GnACDb3B78Ng=="
+}
+
+variable "frontend-tag" { 
+  default = "v1.0"
+}
+
+variable "acr-password" { 
+  default = "NmRk5sTqSjmWOJPhYqNhbOzTSWVY7SXmC2xBoMOnc5+ACRC9wSA5"
+}
+
+
+variable "cors_domain" { 
+  default = "purplebay-941eeacb.eastus.azurecontainerapps.io"
+}
+
+
+
+
 variable "webapp_plan_name" {
   default = "casino-mern-plan"
 }
@@ -38,12 +63,6 @@ variable "frontend_name" {
   default = "casino-frontend"
 }
 
-
-## supply variables here
-variable "backend_image" { 
-  default = "casinomernregistry.azurecr.io/backend:v2.1"
-}
-
 variable "passenger_app_env" { 
   default = "production"
 }
@@ -60,22 +79,12 @@ variable "db_username" {
   default = "casino-db"
 }
 
-variable "db_password" { 
-  default = "qgTh6mdovthOYg4sugmvAxxKvGnjv0iktmiYqufuW1Rf4igGjaIwrAPOfTL9hckRRMr1nOmiq1ZHACDbBnpOXQ=="
-}
+
 
 variable "db_port" { 
   default = "10255"
 }
 
-variable "frontend_image" { 
-  default = "casinomernregistry.azurecr.io/frontend:v2.1"
-}
 
-variable "acr-password" { 
-  default = "135Rqa0Pupb4s0hQ+LWZAAN8zQyarPq5MbXyLDOFGu+ACRCKoyYe"
-}
 
-variable "cors_domain" { 
-  default = "redsky-4c0d990d.eastus.azurecontainerapps.io"
-}
+

@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 ## managed identity ## 
-
+/*
 resource "azurerm_user_assigned_identity" "application-identity" {
   location = var.location 
   name = var.managed_identity_name
@@ -17,7 +17,7 @@ resource "azurerm_role_assignment" "role-assignment" {
   role_definition_name = "ACRPull"
   principal_id = azurerm_user_assigned_identity.application-identity.principal_id
 }
-
+*/
 ## virtual network ##
 resource "azurerm_virtual_network" "vnet" {
   name = "${var.rg_name}-vnet"
@@ -49,55 +49,32 @@ resource "azurerm_application_security_group" "asg" {
 }
 
 ## security  groups 
-resource "azurerm_network_security_group" "web" {
-  name = var.web-nsg
+resource "azurerm_network_security_group" "app" {
+  name = var.app-nsg
   location = var.location
   resource_group_name = azurerm_resource_group.rg.name
 
   security_rule {
-      name = "allowAllHTTP"
+      name = "allowAllHTTPS"
       priority = 100
       direction = "Inbound"
       access = "Allow"
       protocol = "Tcp"
       source_port_range = "*"
-      destination_port_range = "80"
+      destination_port_ranges = ["443", "80"]
       source_address_prefix = "*"
       destination_address_prefix = "*"
   }
 }
 
 
-resource "azurerm_network_security_group" "app" {
-  name = var.app-nsg
-  location = var.location
-  resource_group_name = azurerm_resource_group.rg.name
-
-  security_rule { 
-    name = "allowFromToAPI"
-    priority = 100
-    direction = "Inbound"
-    access = "Allow"
-    protocol = "Tcp"
-    source_port_range = "*"
-    destination_port_range = "3032"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
-
-  }
-}
-
 ## security group associations ##
-
-resource "azurerm_subnet_network_security_group_association" "web" {
-  subnet_id = azurerm_subnet.subnets["web"].id
-  network_security_group_id = azurerm_network_security_group.web.id
-}
 
 resource "azurerm_subnet_network_security_group_association" "app" {
   subnet_id = azurerm_subnet.subnets["app"].id
   network_security_group_id = azurerm_network_security_group.app.id
 }
+
 
 ## azure container registry
 
@@ -156,20 +133,6 @@ resource "azurerm_cosmosdb_mongo_database" "login-db" {
   ]
 }
 
-## private dns zone 
-
-resource "azurerm_private_dns_zone" "priv_dns_zone" {
-  name = "lbabay.com"
-  resource_group_name = var.rg_name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "priv_dns_zone_link" {
-  name = "lbabay-priv-dns-zone"
-  resource_group_name = azurerm_resource_group.rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.priv_dns_zone.name
-  virtual_network_id = azurerm_virtual_network.vnet.id
-}
-
 // container app environment
 resource "azurerm_container_app_environment" "casino-app-env" { 
   name = var.app_env 
@@ -189,6 +152,15 @@ resource "azurerm_log_analytics_workspace" "casino-monitoring" {
   retention_in_days = 30
 }
 
+// outputs 
+
 output "default_domain" {
   value = azurerm_container_app_environment.casino-app-env
 }
+
+output "acr-password" { 
+  value = azurerm_container_registry.registry.admin_password
+  sensitive = true
+}
+
+

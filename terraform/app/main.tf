@@ -29,7 +29,7 @@ resource "azapi_resource" "frontend-container-app" {
         containers = [
           {
             name = var.frontend_name
-            image = var.frontend_image
+            image = "casinomernregistry.azurecr.io/frontend:${var.frontend-tag}"
             resources = {
               cpu = 1 
               memory = "2.0Gi"
@@ -76,7 +76,7 @@ resource "azapi_resource" "backed-container-app" {
         containers = [
           { 
             name = "casinoapi"
-            image = var.backend_image
+            image = "casinomernregistry.azurecr.io/backend:${var.backend-tag}"
             resources = {
               cpu = 1 
               memory = "2.0Gi"
@@ -101,12 +101,12 @@ resource "azapi_resource" "backed-container-app" {
 data "azurerm_resource_group" "rg" {
   name = var.rg_name
 }
-
+/*
 data "azurerm_user_assigned_identity" "casino-mern" {
   name = "casino-mern-identity"
   resource_group_name = var.rg_name
 }
-
+*/
 data "azurerm_subnet" "app" { 
   name = "app"
   virtual_network_name = "casino-mern-app-vnet"
