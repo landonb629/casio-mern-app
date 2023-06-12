@@ -35,7 +35,7 @@ jobs:
       run: | 
         cd ./frontend
         docker build -t casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha}} -f Dockerfile.prod .
-        docker push casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha }} -f Dockerfile.prod .
+        docker push casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha }} 
     
     - name: build and push backend
       if: steps.filter.outputs.backend == 'true'

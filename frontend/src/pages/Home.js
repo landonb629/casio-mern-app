@@ -15,7 +15,7 @@ const Home = () => {
                <div>
                    <Logout />
                </div>
-               <h1>{`welcome home, ${username}. test Changes`}</h1>
+               <h1>{`welcome home, ${username}. changes`}</h1>
                <div>
                    <h4>{`your current balance is: ${balance}`}</h4>
                </div>
