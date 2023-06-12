@@ -4,7 +4,7 @@ variable "backend-tag" {
 }
 
 variable "db_password" { 
-  default = "dbsrZUpEPttaGT3KbhuAm12l4IVP1gKp9mB05xxRl17Zw9gRFVWeGG24AZaFAFYSYDW1uUa9A7GnACDb3B78Ng=="
+  default = "YnpUc6cttiHTyuA9NwFCy3D5cU5hBfTWnB7SMk4O6HscVtcQdf4fCz6voMv78mHmdCbB4ChJRSqjACDbO9Mo3w=="
 }
 
 variable "frontend-tag" { 
@@ -12,12 +12,12 @@ variable "frontend-tag" {
 }
 
 variable "acr-password" { 
-  default = "NmRk5sTqSjmWOJPhYqNhbOzTSWVY7SXmC2xBoMOnc5+ACRC9wSA5"
+  default = "BLFgbRjjl9HmmJQGFRhyiiYABiAUVuAmbnjdGHXb1i+ACRAMzJwW"
 }
 
 
 variable "cors_domain" { 
-  default = "purplebay-941eeacb.eastus.azurecontainerapps.io"
+  default = "ambitiouswave-33cc1b34.eastus.azurecontainerapps.io"
 }
 
 
