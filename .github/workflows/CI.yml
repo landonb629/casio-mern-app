@@ -25,11 +25,13 @@ jobs:
           backend:
             - "backend/**"
     
-    - name: login to azure 
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
+    - name: login to azure container registry
+      uses: azure/docker-login@v1
+      with: 
+        login-server: casinomernregistry.azurecr.io
+        username: ${{secrets.ACR-USERNAME}}
+        password: ${{secrets.ACR-PASSWORD}}
+
     - name: build and push frontend
       if: steps.filter.outputs.frontend == 'true'
       run: | 

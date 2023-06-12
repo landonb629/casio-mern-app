@@ -27,10 +27,25 @@ jobs:
           backend:
             - "backend/**"
     
+    - name: first 10 in SHA
+      id: tag
+      run: | 
+        echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+    - name: login to azure 
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
     - name: deploy frontend
       if: github.event.inputs.deploy_frontend == 'true'
-      run: | 
-        echo "deploying code for frontend"
+      uses: azure/container-apps-deploy-action@v1 
+      with:
+        acrName: casinomernregistry
+        containerAppsName: casino-frontend
+        resourceGroup: casino-mern-app
+        imageToDeploy: casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha}}
+        
     
     - name: deploy backend
       if: github.event.inputs.deploy_backend == 'true'
