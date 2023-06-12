@@ -42,7 +42,7 @@ jobs:
       uses: azure/container-apps-deploy-action@v1 
       with:
         acrName: casinomernregistry
-        containerAppsName: casino-frontend
+        containerAppName: casino-frontend
         resourceGroup: casino-mern-app
         imageToDeploy: casinomernregistry.azurecr.io/frontend:${{steps.tag.outputs.sha}}
         
